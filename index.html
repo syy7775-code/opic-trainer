@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPIc AL 트레이너 · 모의고사</title>
+<style>
+:root{--bg:#0f1216;--panel:#171b21;--panel2:#1e232b;--line:#2a313b;--text:#e7eaee;--mute:#9aa3ad;--acc:#3ec7a6;--acc2:#5aa9ff;--warn:#f0b44c;--bad:#ef6b6b;--good:#5ad18a;--purple:#b48cff}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;font-size:15px;line-height:1.55}
+a{color:var(--acc2)}
+header{position:sticky;top:0;z-index:5;background:#0f1216ee;backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:-.3px}
+.brand span{color:var(--acc)}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{background:none;border:0;color:var(--mute);padding:7px 11px;border-radius:8px;cursor:pointer;font:inherit}
+nav button.on,nav button:hover{background:var(--panel2);color:var(--text)}
+.dday{margin-left:auto;font-size:13px;color:var(--mute)}
+.dday b{color:var(--warn)}
+main{max-width:1100px;margin:0 auto;padding:18px 16px 80px}
+h1{font-size:22px;margin:4px 0 14px}
+h2{font-size:18px;margin:22px 0 10px}
+h3{font-size:15.5px;margin:16px 0 8px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer;font:inherit;font-weight:600}
+.btn:hover{border-color:#3a4450}
+.btn.pri{background:var(--acc);color:#06261f;border-color:var(--acc)}
+.btn.red{background:var(--bad);color:#2a0606;border-color:var(--bad)}
+.btn.sm{padding:5px 10px;font-size:13px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mute{color:var(--mute)}
+.small{font-size:13px}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);color:var(--mute)}
+.tag.acc{color:var(--acc);border-color:#2b6f60}
+.tag.warn{color:var(--warn);border-color:#6d5427}
+.tag.bad{color:var(--bad);border-color:#6d2f2f}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--panel2);color:var(--mute);padding:6px 11px;border-radius:99px;cursor:pointer;font:inherit;font-size:13.5px}
+.chip.on{background:#123a32;border-color:var(--acc);color:#d9fff5}
+textarea,input[type=text],input[type=password],input[type=number],select{width:100%;background:#0c0f13;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+textarea{min-height:150px;resize:vertical;line-height:1.6}
+label.f{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+.qbox{background:linear-gradient(180deg,#18202a,#151a20);border:1px solid var(--line);border-radius:16px;padding:20px}
+.eva{display:flex;gap:16px;align-items:center}
+.ava{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#7fe7cf,#2a8f78 60%,#14453b);display:flex;align-items:center;justify-content:center;font-weight:800;color:#03211a;font-size:20px;flex:none;box-shadow:0 0 0 0 #3ec7a655}
+.ava.talk{animation:pulse 1s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #3ec7a688}70%{box-shadow:0 0 0 16px #3ec7a600}100%{box-shadow:0 0 0 0 #3ec7a600}}
+.qtext{font-size:17px;margin:12px 0 4px}
+.qhidden{color:var(--mute);font-style:italic}
+.timer{font-variant-numeric:tabular-nums;font-weight:700}
+.meter{height:8px;background:#0c0f13;border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.meter>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .08s}
+.live{background:#0c0f13;border:1px dashed var(--line);border-radius:10px;padding:10px;min-height:70px;white-space:pre-wrap}
+.live .int{color:var(--mute)}
+.recdot{width:10px;height:10px;border-radius:50%;background:var(--bad);display:inline-block;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.2}}
+.prog{display:flex;gap:3px;margin:8px 0 14px}
+.prog i{flex:1;height:6px;border-radius:3px;background:var(--panel2)}
+.prog i.done{background:#2b6f60}.prog i.cur{background:var(--acc)}
+.bar{display:flex;align-items:center;gap:10px;margin:6px 0}
+.bar .lab{width:120px;font-size:13.5px;color:var(--mute);flex:none}
+.bar .tr{flex:1;height:10px;background:#0c0f13;border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.bar .tr i{display:block;height:100%}
+.bar .v{width:44px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13.5px}
+.lvl{font-size:44px;font-weight:900;letter-spacing:-1px;line-height:1}
+.lvlbox{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.issue{border-left:3px solid var(--warn);padding:8px 12px;background:#1b1810;border-radius:0 10px 10px 0;margin:8px 0}
+.issue.bad{border-color:var(--bad);background:#1d1212}
+.issue.good{border-color:var(--good);background:#0f1a14}
+.issue b{display:block;margin-bottom:2px}
+.tx{background:#0c0f13;border:1px solid var(--line);border-radius:10px;padding:12px;line-height:1.9}
+.c-conn{color:#8cc8ff;border-bottom:1px solid #8cc8ff55}
+.c-past{color:#8ff0b5}
+.c-err{background:#4a1d1d;color:#ffb3b3;border-bottom:2px wavy var(--bad);cursor:help}
+.c-rep{background:#3d3214;color:#ffd98a}
+.c-exp{background:#2e2147;color:#d9c4ff}
+.legend span{margin-right:10px;font-size:12.5px}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+details>summary{cursor:pointer;padding:12px 14px;list-style:none;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+details>summary::-webkit-details-marker{display:none}
+details[open]>summary{border-bottom:1px solid var(--line)}
+details .in{padding:12px 14px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{color:var(--mute);font-weight:600}
+.score{font-weight:800;font-variant-numeric:tabular-nums}
+.s-good{color:var(--good)}.s-mid{color:var(--warn)}.s-bad{color:var(--bad)}
+.md h3,.md h4{margin:14px 0 6px}.md ul{margin:4px 0 8px 18px;padding:0}.md p{margin:6px 0}
+.md code{background:#0c0f13;padding:1px 5px;border-radius:5px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#233;border:1px solid var(--acc);padding:10px 16px;border-radius:10px;z-index:50}
+.sample{white-space:pre-wrap;background:#0c0f13;border:1px solid var(--line);border-radius:10px;padding:12px;line-height:1.75}
+.kbd{font-family:ui-monospace,Consolas,monospace;font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.flex1{flex:1}
+.sep{height:1px;background:var(--line);margin:14px 0}
+.note{font-size:13px;color:var(--mute);background:var(--panel2);border-radius:10px;padding:10px 12px;margin:10px 0}
+@media (max-width:640px){.bar .lab{width:92px}.lvl{font-size:36px}
+ header{position:static}.top{gap:6px;padding:8px 10px}nav{flex-wrap:nowrap;overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch}nav button{white-space:nowrap;padding:7px 9px}nav::-webkit-scrollbar{display:none}nav{scrollbar-width:none}.dday{margin-left:0}
+ main{padding:12px 10px 80px}.card,.qbox{padding:13px}.ava{width:52px;height:52px;font-size:15px}.eva{gap:10px;align-items:flex-start}.btn{padding:9px 12px}textarea{font-size:16px}input,select{font-size:16px}
+ table{font-size:12.5px}th,td{padding:6px 5px}}
+</style>
+</head>
+<body>
+<header><div class="top">
+  <div class="brand">OPIc <span>AL</span> 트레이너</div>
+  <nav id="nav"></nav>
+  <div class="dday" id="dday"></div>
+</div></header>
+<main id="app"></main>
+
+<script>
+/* =========================================================
+   DATA: question bank, types, rubric, expressions
+   ========================================================= */
+const EXAM_DATE = '2026-11-25T18:20:00+09:00';
+
+const TYPES = {
+  intro:{name:'자기소개', tense:'present', sec:[45,90], words:[70,160],
+    tpl:'인사 → 이름·신분 → 전공/하는 일(+이유 한 줄) → 요즘 집중하는 것 → 취미 → 짧은 마무리. 1분 안팎, 실수 없이 깔끔하게. (Q1은 채점 비중이 낮다는 게 강사들 통설이지만 첫인상이라 매끄럽게)',
+    src:'PDF Ch.1 (이름→가족→전공→취미 흐름)'},
+  desc:{name:'묘사', tense:'present', sec:[70,130], words:[110,230],
+    tpl:'① 핵심 한 문장(메인 포인트, 20초 안에) + 감정 → ② 위치/전체 모습 → ③ 디테일 2~3개 (형용사 다양하게) → ④ 내가 좋아하는 이유(why) → ⑤ 한 줄 마무리.  현재시제 유지. 서론-본론-결론이 보이는 "문단"으로.',
+    src:'PDF Ch.4 (위치→규모→내부→특별함), 강지완(Q2·5·8 문단 평가), 오픽노잼(MP: what-feeling-why)'},
+  routine:{name:'루틴/습관', tense:'present', sec:[70,130], words:[110,230],
+    tpl:'① 메인 포인트를 "행동"으로 → ② 순서대로 2~4단계 (first / then / after that / finally) → ③ 과거엔 달랐다 1~2문장 → ④ 지금 감정·깨달음 (I\'ve realized that) → ⑤ 요약 마무리.  빈도 부사(usually, always, every weekend) 필수.',
+    src:'오픽노잼 aYk7 5단계 모델, PDF Ch.2/Ch.9'},
+  past:{name:'과거 경험', tense:'past', sec:[80,150], words:[130,260],
+    tpl:'① 배경 (언제·어디·누구랑) → ② 사건 전개 (문제/반전: the thing is, all of a sudden) → ③ 내 반응·감정 → ④ 해결·결과 (in the end, it turned out) → ⑤ 교훈/지금 → 마무리.  끝까지 과거시제. 현재로 미끄러지면 바로 IH 상한.',
+    src:'강지완 세부진단서(Q4·6·7·9·10·13 시제), PDF Ch.5·7'},
+  compare:{name:'과거-현재 비교', tense:'mixed', sec:[80,150], words:[130,260],
+    tpl:'① 현재 메인 포인트 (비교어 없이) → ② 과거 묘사 (used to, back then) → ③ 다시 현재 + 무엇이 달라졌나 → ④ 변화 이유 → ⑤ 내 감정/의견으로 마무리.',
+    src:'오픽노잼 PI2F(비교 질문), PDF Ch.7 (비교·대조 어구)'},
+  rp_ask:{name:'롤플레이: 질문하기', tense:null, sec:[40,95], words:[60,160],
+    tpl:'① 인사·신원 → ② 용건 (I\'m calling because / I was wondering if) → ③ 질문 3~4개 (각 질문에 이유 한 줄 + 가상 대답에 리액션 "Oh really? That\'s perfect.") → ④ 마무리 (I\'ll think about it and call you back).',
+    src:'PDF Ch.10·11, 세라잉글리쉬·hi바라 AL 답변, 강지완(Q11 질문 충실도가 최종 등급에 영향)'},
+  rp_problem:{name:'롤플레이: 문제해결', tense:null, sec:[60,125], words:[90,200],
+    tpl:'① 인사 → ② 문제 상황 설명 (The thing is / I\'m afraid) → ③ 사과·공감 → ④ 대안 2~3개 (How about ~ instead? / Another option is ~ / If that doesn\'t work, we could ~) → ⑤ 상대 선택 요청 → 마무리.  Q12에서 "해결 성공"이 IM2 vs IH를 가른다는 진단서 근거.',
+    src:'PDF Ch.12, 강지완 BLOLt (Q12 succeeds vs unable)'},
+  rp_exp:{name:'롤플레이: 관련 경험', tense:'past', sec:[80,150], words:[130,260],
+    tpl:'과거 경험과 같은 구조 + 앞 롤플레이와 연결 ("Actually, something similar happened to me"). 문제 → 어떻게 해결 → 결과·교훈. 과거시제 유지.',
+    src:'강지완(Q13 시제 체크), 연수연·hi바라 실제 답변'},
+  adv_compare:{name:'고난도: 변화·비교 (Q14)', tense:'mixed', sec:[90,160], words:[150,280],
+    tpl:'① 큰 그림 한 문장 (When it comes to ~, I think ~ has changed dramatically) → ② 과거 구체 예시 → ③ 현재 구체 예시 → ④ 변화 원인 → ⑤ 장단점/내 의견 → 마무리.  일반론+구체 예시가 AL 포인트.',
+    src:'강지완 zmamh (AL: 사회적 이슈·대부분 주제를 정확하게, 넓은 어휘로)'},
+  adv_issue:{name:'고난도: 사회 이슈 (Q15)', tense:'any', sec:[90,160], words:[150,280],
+    tpl:'① 이슈 제시 (One of the biggest issues these days is ~) → ② 원인 → ③ 영향 (사람들/나) → ④ 내 의견 → ⑤ 해결책·전망 (The government should ~ / I hope ~) → 마무리.  "Can you imagine?" 같은 수사로 경험 연결 가능.',
+    src:'오픽노잼 bkbI (뉴스→반응→경험), 강지완 zmamh'},
+  rp_eva:{name:'Eva에게 질문하기', tense:null, sec:[30,75], words:[40,120],
+    tpl:'① 리액션+관심 (Oh, you like movies too? I\'m curious) → ② 질문 3~4개 (Yes/No + Wh 섞기) → ③ 마무리.',
+    src:'PDF Ch.10 (Wh-question 만들기)'}
+};
+
+const INTRO_Q = "Let's start the interview now. Tell me a little bit about yourself.";
+
+// kind: survey | random ; qs: {t,q}
+const TOPICS = [
+ {id:'school',name:'학교/수업',kind:'survey',kw:['school','university','college','class','campus','professor','major','lecture','student','semester'],qs:[
+  {t:'desc',q:"You indicated in the survey that you are a student. Tell me about your school. Where is it located, and what does the campus look like? Describe it in as much detail as possible."},
+  {t:'desc',q:"Tell me about your favorite professor. What does he or she look like? Why do you like him or her?"},
+  {t:'routine',q:"I'd like to know about your typical day at school. What do you do from the moment you arrive on campus until you leave? Tell me in detail."},
+  {t:'past',q:"Tell me about a memorable project or assignment you worked on at school. What was it about, who did you work with, and how did it turn out?"},
+  {t:'compare',q:"How is your school life now different from when you first entered university? What has changed, and why?"}]},
+ {id:'housing',name:'집/거주',kind:'survey',kw:['home','house','apartment','room','live','living','kitchen','neighborhood','furniture','floor','repair','fix','broke','boiler','heating','air','chores','clean'],qs:[
+  {t:'desc',q:"I would like to know where you live. Describe your home to me. What does it look like? How many rooms does it have? Tell me in detail."},
+  {t:'routine',q:"Tell me about all the household chores you are in charge of. What are they? How do you carry out your responsibilities?"},
+  {t:'compare',q:"Tell me about the home you lived in when you were a child. How was it different from the place you live in now?"},
+  {t:'past',q:"Have you ever had a problem at home, such as something breaking down? What happened, and how did you deal with it? Tell me the whole story."},
+  {t:'past',q:"Tell me about a change you made to your home recently. What did you change and why? How did it turn out?"}]},
+ {id:'movies',name:'영화보기',kind:'survey',kw:['movie','movies','film','theater','cinema','actor','genre','watch','screen'],qs:[
+  {t:'desc',q:"You indicated that you like to watch movies. What are your favorite and least favorite kinds of movies? What do you like or dislike about them?"},
+  {t:'routine',q:"What do you usually do when you go to the movies? Who do you go with, and what do you do before and after the movie?"},
+  {t:'past',q:"Tell me about the most memorable movie you have ever seen. What was it about, and why was it so memorable?"},
+  {t:'compare',q:"How have movies changed since you were young? Compare the movies you used to watch with the ones you watch now."},
+  {t:'past',q:"Tell me about a time when something unexpected happened while you were watching a movie at a theater."}]},
+ {id:'concerts',name:'공연/콘서트',kind:'survey',kw:['concert','performance','music','singer','band','stage','ticket','festival','show'],qs:[
+  {t:'desc',q:"You indicated that you go to concerts. What kinds of concerts do you like? Where do you usually go, and who do you go with?"},
+  {t:'routine',q:"What do you usually do before, during, and after a concert? Describe your routine in detail."},
+  {t:'past',q:"Tell me about the first concert you ever went to. When was it, who did you go with, and how did you feel?"},
+  {t:'past',q:"Tell me about a memorable incident that happened at a concert. What happened, and why was it memorable?"}]},
+ {id:'music',name:'음악감상',kind:'survey',kw:['music','song','songs','listen','singer','genre','playlist','headphones','album'],qs:[
+  {t:'desc',q:"You indicated that you enjoy listening to music. What kinds of music do you listen to? Who are your favorite singers or musicians?"},
+  {t:'routine',q:"When and where do you usually listen to music? What devices do you use? Tell me about your music-listening habits."},
+  {t:'past',q:"How did you first get interested in music? Tell me how your taste in music has developed since then."},
+  {t:'compare',q:"How has the way people listen to music changed over the years? Compare the past and the present."}]},
+ {id:'park',name:'공원가기',kind:'survey',kw:['park','tree','trees','bench','walk','trail','grass','river','lake'],qs:[
+  {t:'desc',q:"Tell me about a park you often go to. Where is it, and what does it look like? Describe it in detail."},
+  {t:'routine',q:"What do you usually do when you go to the park? Who do you go with?"},
+  {t:'past',q:"Tell me about a memorable experience you had at a park. What happened, and why do you remember it?"}]},
+ {id:'walking',name:'걷기/조깅',kind:'survey',kw:['walk','walking','jog','jogging','run','running','exercise','route','trail','shoes'],qs:[
+  {t:'desc',q:"You indicated that you go jogging or walking. Where do you usually go? Why do you like that place?"},
+  {t:'routine',q:"Tell me about your routine when you go jogging or walking. What do you do before, during, and after?"},
+  {t:'past',q:"Tell me about a memorable or unexpected thing that happened while you were jogging or walking."},
+  {t:'past',q:"When did you first start jogging or walking? What made you start, and how has it changed you?"}]},
+ {id:'domtravel',name:'국내여행',kind:'survey',kw:['trip','travel','city','beach','mountain','hotel','busan','jeju','korea','visit'],qs:[
+  {t:'desc',q:"Tell me about a place in Korea that you like to travel to. What is it like, and why do you like going there?"},
+  {t:'routine',q:"What do you usually do to prepare for a trip? Tell me about the steps you take before you leave."},
+  {t:'past',q:"Tell me about a memorable trip you took in Korea. Where did you go, who did you go with, and what happened?"},
+  {t:'past',q:"Tell me about a trip you took when you were a child. Where did you go, and what do you remember about it?"}]},
+ {id:'abroad',name:'해외여행',kind:'survey',kw:['overseas','abroad','country','flight','airport','foreign','culture','passport','trip','travel'],qs:[
+  {t:'desc',q:"Tell me about a country or city you have visited. What was it like? How were the people and the culture?"},
+  {t:'routine',q:"What do you usually do when you prepare for an overseas trip? Describe the process in detail."},
+  {t:'past',q:"Tell me about an unexpected problem you had while traveling abroad. What happened, and how did you handle it?"}]},
+ {id:'staycation',name:'집에서 보내는 휴가',kind:'survey',kw:['vacation','home','relax','holiday','rest','family','break'],qs:[
+  {t:'desc',q:"You indicated that you spend your vacations at home. Who do you like to see, and what do you like to do when you're on vacation at home?"},
+  {t:'past',q:"Tell me about what you did during your last vacation at home, from the first day to the last day."},
+  {t:'past',q:"Tell me about a memorable vacation you spent at home. What made it special?"}]},
+ {id:'cafe',name:'카페',kind:'survey',kw:['cafe','coffee','latte','table','barista','drink','americano'],qs:[
+  {t:'desc',q:"I'd like to know about a café you often visit. Where is it, and how often do you go there? What does it look like, and why do you like it?"},
+  {t:'routine',q:"What do you usually do when you go to a café? Who do you go with, and what do you usually order?"},
+  {t:'past',q:"Tell me about a memorable experience you had at a café."},
+  {t:'compare',q:"How have cafés in Korea changed over the years? Compare cafés in the past with the ones today."}]},
+ {id:'sns',name:'SNS',kind:'survey',kw:['sns','instagram','social','media','post','follow','app','comment','youtube'],qs:[
+  {t:'desc',q:"What is your favorite SNS? What do you use it for? Why do you like it?"},
+  {t:'past',q:"Tell me about the first time you started using SNS. Who taught you, and how did you feel?"},
+  {t:'past',q:"Tell me about the last time you used SNS. What did you do on it? Tell me as much as you can."},
+  {t:'compare',q:"How has SNS changed people's lives? Compare how people communicated before SNS with how they communicate now."}]},
+ {id:'gym',name:'헬스/운동',kind:'survey',kw:['gym','work','workout','exercise','weight','weights','fitness','trainer','muscle'],qs:[
+  {t:'desc',q:"You indicated that you work out at a gym. Tell me about the gym you go to. What do you like about it? How do you feel after working out?"},
+  {t:'routine',q:"Tell me about your workout routine. What do you do first, and what do you do after that?"},
+  {t:'past',q:"Tell me about how you first started working out. What made you start, and what was it like at the beginning?"}]},
+ {id:'job',name:'구직활동',kind:'survey',kw:['job','career','interview','company','analyst','intern','internship','resume','work'],qs:[
+  {t:'desc',q:"You indicated in the survey that you are looking for a job. What kind of job are you looking for? How are you preparing for it? Tell me in detail."},
+  {t:'past',q:"Tell me about a memorable experience you had while preparing for a job, such as an interview or an internship application."},
+  {t:'compare',q:"How has the way people look for jobs changed compared to the past?"}]},
+ // ---- random (돌발) ----
+ {id:'recycling',name:'재활용',kind:'random',kw:['recycle','recycling','trash','plastic','bottle','bottles','garbage','waste','separate','bin'],qs:[
+  {t:'desc',q:"Tell me about recycling in your country. What kinds of things do people recycle, and how do they do it?"},
+  {t:'routine',q:"How do you recycle at home? Describe the process step by step."},
+  {t:'past',q:"Tell me about a memorable experience related to recycling. Maybe something went wrong, or you learned something."}]},
+ {id:'weather',name:'날씨/계절',kind:'random',kw:['weather','season','seasons','spring','summer','winter','fall','autumn','rain','cold','hot','dust'],qs:[
+  {t:'desc',q:"Tell me about the weather in your country. What are the seasons like?"},
+  {t:'compare',q:"How has the weather in your country changed compared to when you were young?"},
+  {t:'past',q:"Tell me about a memorable experience you had because of the weather, such as a heavy rainstorm or a heat wave."}]},
+ {id:'tech',name:'기술/기기',kind:'random',kw:['phone','smartphone','technology','device','app','internet','computer','laptop','ai'],qs:[
+  {t:'desc',q:"What kind of technology do you use most often? Why is it important to you?"},
+  {t:'past',q:"Nowadays there are all kinds of electronic devices. What was the latest device you bought? When did you buy it, and why?"},
+  {t:'compare',q:"How is the technology people use today different from what people used when you were a child?"},
+  {t:'past',q:"Tell me about a time when you had a problem with a piece of technology. What happened, and how did you solve it?"}]},
+ {id:'bank',name:'은행',kind:'random',kw:['bank','account','money','atm','card','teller','loan','app'],qs:[
+  {t:'desc',q:"Tell me about the bank you use. Where is it, and what does it look like?"},
+  {t:'routine',q:"What do people usually do when they go to the bank? Describe the process."},
+  {t:'past',q:"Tell me about a memorable experience you had at a bank."}]},
+ {id:'transport',name:'교통',kind:'random',kw:['bus','subway','car','traffic','transportation','commute','taxi','train','station'],qs:[
+  {t:'desc',q:"Tell me about the public transportation in your city. What kinds are there, and which one do you use the most?"},
+  {t:'compare',q:"How has transportation in your country changed over the years?"},
+  {t:'past',q:"Tell me about a memorable experience you had while using public transportation."}]},
+ {id:'holiday',name:'명절/휴일',kind:'random',kw:['holiday','holidays','chuseok','seollal','family','tradition','food','celebrate','relatives'],qs:[
+  {t:'desc',q:"Tell me about a holiday that people in your country celebrate. What do people usually do on that day?"},
+  {t:'past',q:"Tell me about a memorable holiday you spent when you were young."},
+  {t:'compare',q:"How have holiday traditions in your country changed compared to the past?"}]},
+ {id:'food',name:'음식/식당',kind:'random',kw:['food','restaurant','eat','menu','dish','taste','cook','meal','order'],qs:[
+  {t:'desc',q:"Tell me about your favorite restaurant. Where is it, what does it look like, and what do you usually order?"},
+  {t:'routine',q:"What do people in your country usually eat for each meal of the day?"},
+  {t:'past',q:"Tell me about a memorable meal you had. When was it, and what made it special?"}]},
+ {id:'furniture',name:'가구',kind:'random',kw:['furniture','sofa','bed','desk','chair','table','shelf','closet'],qs:[
+  {t:'desc',q:"Tell me about your favorite piece of furniture at home. What does it look like, and why do you like it?"},
+  {t:'compare',q:"How is the furniture in your home now different from the furniture you had when you were young?"},
+  {t:'past',q:"Tell me about a time when you bought a piece of furniture. What happened?"}]},
+ {id:'hotel',name:'호텔',kind:'random',kw:['hotel','room','check','lobby','stay','reservation','front','desk'],qs:[
+  {t:'desc',q:"Tell me about hotels in your country. What are they usually like?"},
+  {t:'routine',q:"What do you usually do when you check into a hotel?"},
+  {t:'past',q:"Tell me about a memorable experience you had at a hotel."}]},
+ {id:'geo',name:'지형/동네',kind:'random',kw:['country','mountain','mountains','river','sea','city','region','neighborhood','korea','seoul'],qs:[
+  {t:'desc',q:"Tell me about the geography of your country. What are some of its famous mountains, rivers, or seas?"},
+  {t:'desc',q:"Tell me about the neighborhood you live in. What does it look like, and what do people do there?"},
+  {t:'past',q:"Tell me about a memorable outdoor activity you did at a famous place in your country."}]},
+ {id:'health',name:'건강/병원',kind:'random',kw:['hospital','doctor','healthy','health','medicine','clinic','treatment','sick','exercise'],qs:[
+  {t:'routine',q:"Let's talk about the process of going to the hospital. Describe it in detail, from making a reservation to the end of the treatment."},
+  {t:'desc',q:"Tell me about a healthy person you know. How does that person stay healthy? How has he or she influenced you?"},
+  {t:'past',q:"Tell me about a time when you were sick. What happened, and how did you get better?"}]},
+ {id:'shopping',name:'쇼핑',kind:'random',kw:['shopping','store','mall','buy','clothes','online','shop','price'],qs:[
+  {t:'desc',q:"Tell me about a store or shopping mall you often go to. What does it look like?"},
+  {t:'compare',q:"How has the way people shop changed compared to the past?"},
+  {t:'past',q:"Tell me about a memorable shopping experience you had."}]}
+];
+
+const RP = [
+ {id:'rp_movie',name:'영화 예매',kw:['ticket','tickets','movie','theater','seat','show','time'],qs:{
+  rp_ask:"I'd like to give you a situation and ask you to act it out. You want to see a movie with a friend this weekend. Call the theater and ask three or four questions to buy tickets.",
+  rp_problem:"I'm sorry, but there is a problem I need you to resolve. When you arrive at the theater, you realize that the tickets you bought are for the wrong day. Explain the situation to the staff and offer two or three alternatives to solve the problem.",
+  rp_exp:"That's the end of the situation. Have you ever had a problem with a reservation or a ticket? Tell me what happened and how you solved it."}},
+ {id:'rp_phone',name:'스마트폰 구매',kw:['phone','smartphone','store','model','price','warranty','return'],qs:{
+  rp_ask:"I'm going to give you a situation and ask you to act it out. Imagine that you want to buy a new smartphone. Call the store and ask three or four questions about the phone.",
+  rp_problem:"I'm sorry, but there is a problem. You bought a new smartphone, but it stopped working after just two days. Call the store, explain the situation, and suggest two or three alternatives to resolve the problem.",
+  rp_exp:"That's the end of the situation. Have you ever bought something that turned out to be broken or defective? What happened, and how did you deal with it?"}},
+ {id:'rp_friend',name:'친구 약속',kw:['friend','meet','brunch','plan','plans','weekend','dinner'],qs:{
+  rp_ask:"I'd like to give you a situation and ask you to act it out. Your friend has invited you to brunch this weekend. Call your friend and ask three or four questions about the plan.",
+  rp_problem:"There's a problem you must take care of. You were supposed to meet your friend, but suddenly something came up and you can't make it. Call your friend, explain the situation, and suggest two or three alternatives.",
+  rp_exp:"That's the end of the situation. Tell me about a time when you had to cancel plans with someone. What happened, and how did you handle it?"}},
+ {id:'rp_trip',name:'여행 준비',kw:['trip','travel','flight','hotel','book','airport','agency'],qs:{
+  rp_ask:"I'd like to give you a situation and ask you to act it out. Imagine you're planning a family trip. Call a friend who just came back from a trip and ask three or four questions about the trip you're planning.",
+  rp_problem:"I'm sorry, but there is a problem. You arrive at the airport and find out that your flight has been canceled. Call the travel agency, explain the situation, and suggest two or three alternatives.",
+  rp_exp:"That's the end of the situation. Tell me about a time when something went wrong while you were traveling. What happened, and how did you solve it?"}},
+ {id:'rp_shop',name:'친구와 쇼핑',kw:['shopping','friend','mall','buy','clothes','sick','store'],qs:{
+  rp_ask:"I'd like to give you a situation for you to act out. You want to go shopping with your friend. Call your friend and ask three or four questions to make plans.",
+  rp_problem:"I'm sorry, but there is a problem you need to resolve. You are planning to go shopping with your friend, but you suddenly feel sick. Call your friend, explain the situation, and suggest two or three alternatives.",
+  rp_exp:"That's the end of the situation. Tell me about a memorable experience you had when plans with a friend changed at the last minute."}},
+ {id:'rp_gym',name:'헬스장 등록',kw:['gym','membership','fee','trainer','charge','charged','class'],qs:{
+  rp_ask:"I'd like to give you a situation and ask you to act it out. You want to join a new gym in your neighborhood. Call the gym and ask three or four questions about the membership.",
+  rp_problem:"I'm sorry, but there is a problem. You signed up for a gym membership, but you were charged twice. Call the gym, explain the problem, and suggest two or three ways to resolve it.",
+  rp_exp:"That's the end of the situation. Have you ever had a problem with a service you paid for? Tell me what happened."}},
+ {id:'rp_hotel',name:'호텔 예약',kw:['hotel','room','reservation','check','night','booking'],qs:{
+  rp_ask:"I'd like to give you a situation and ask you to act it out. You are planning to stay at a hotel. Call the hotel and ask three or four questions about the rooms and services.",
+  rp_problem:"I'm sorry, but there is a problem. When you check in, the hotel says there is no record of your reservation. Explain the situation to the front desk and suggest two or three alternatives.",
+  rp_exp:"That's the end of the situation. Tell me about a memorable problem you had while staying somewhere away from home."}},
+ {id:'rp_furn',name:'가구 배송',kw:['furniture','delivery','damaged','store','order','refund','exchange'],qs:{
+  rp_ask:"I'd like to give you a situation and ask you to act it out. You want to buy new furniture for your room. Call a furniture store and ask three or four questions.",
+  rp_problem:"I'm sorry, but there is a problem. The furniture you ordered was delivered, but it was damaged. Call the store, explain the situation, and offer two or three alternatives.",
+  rp_exp:"That's the end of the situation. Tell me about a time when you received a product that was not what you expected. What did you do?"}}
+];
+
+const ADV = [
+ {id:'adv_tech',name:'기술',kw:['technology','phone','smartphone','ai','internet','privacy','device'],
+  adv_compare:"Compare the technology people used ten years ago with the technology they use now. What are the biggest changes, and how have they affected people's daily lives?",
+  adv_issue:"Tell me about a concern or issue related to technology that people talk about these days, such as privacy or artificial intelligence. Why are people worried, and what do you think about it?"},
+ {id:'adv_housing',name:'주거',kw:['housing','home','apartment','price','prices','rent','young'],
+  adv_compare:"How have homes in your country changed over the past few decades? Compare the homes people lived in the past with the homes they live in now.",
+  adv_issue:"Housing prices are a big issue in many countries. Tell me about the housing problems in your country and how they affect young people."},
+ {id:'adv_movie',name:'영화 산업',kw:['movie','movies','theater','streaming','netflix','film','industry'],
+  adv_compare:"Compare the movies that were popular when you were young with the movies that are popular now. What has changed?",
+  adv_issue:"What do people discuss these days about the movie industry, such as streaming services replacing theaters? What is your opinion on this issue?"},
+ {id:'adv_music',name:'음악 산업',kw:['music','song','streaming','concert','ticket','tickets','singer'],
+  adv_compare:"How has the music industry changed? Compare how people discovered and listened to music in the past with how they do it now.",
+  adv_issue:"Tell me about an issue in the music industry, such as illegal downloading or ticket scalping. Why is it a problem, and what should be done?"},
+ {id:'adv_env',name:'환경/재활용',kw:['recycling','environment','plastic','waste','climate','trash'],
+  adv_compare:"How have people's attitudes toward recycling and the environment changed compared to the past?",
+  adv_issue:"There have been many concerns about plastic waste and the environment. What are the issues, and what should people or the government do about them?"},
+ {id:'adv_travel',name:'여행',kw:['travel','tourist','tourists','trip','destination','flight'],
+  adv_compare:"How has the way people travel changed compared to the past?",
+  adv_issue:"Some popular tourist destinations are suffering from too many visitors. Tell me about this issue and what can be done about it."},
+ {id:'adv_money',name:'금융/돈 관리',kw:['money','bank','invest','investing','stock','stocks','finance','saving','savings'],
+  adv_compare:"Compare how people managed their money in the past with how they manage it now. What are the biggest differences?",
+  adv_issue:"Tell me about a recent issue related to banks or finance that people in your country are concerned about. Why is it an issue?"},
+ {id:'adv_sns',name:'SNS',kw:['sns','social','media','news','information','instagram'],
+  adv_compare:"How has social media changed the way people get news and information compared to the past?",
+  adv_issue:"What are some negative effects of social media that people worry about? What do you think should be done?"},
+ {id:'adv_job',name:'취업',kw:['job','jobs','young','career','company','market','employment'],
+  adv_compare:"How has the job market for young people changed compared to your parents' generation?",
+  adv_issue:"What are young people in your country most worried about when it comes to finding a job? Why?"},
+ {id:'adv_health',name:'건강',kw:['health','healthy','exercise','food','diet','habits'],
+  adv_compare:"How have people's eating and exercise habits changed compared to the past?",
+  adv_issue:"Tell me about a health issue that many people in your country are concerned about. Why is it a concern?"}
+];
+
+const EVA_QS = [
+ {q:"I also like going to the movies. Ask me three or four questions about the movies I like.",kw:['movie','movies','watch','genre']},
+ {q:"I live in a house in the city. Ask me three or four questions about where I live.",kw:['house','live','home','room']},
+ {q:"I like to travel during my vacations. Ask me three or four questions about my trips.",kw:['travel','trip','vacation','go']},
+ {q:"I go to the gym regularly. Ask me three or four questions about my workout routine.",kw:['gym','work','exercise','workout']},
+ {q:"I enjoy listening to music. Ask me three or four questions about the music I like.",kw:['music','song','listen','singer']}
+];
+
+// AL-style model answers per type (examples; adapt to real facts)
+const SAMPLES = {
+ intro:{q:INTRO_Q, a:"Hi Eva. Well, let me tell you a little bit about myself. My name is Alex Kim, and I'm a university student in Seoul. I'm double majoring in English and business, which might sound like a strange combination, but honestly, it works pretty well for me. These days, most of my energy goes into preparing for my career, because I want to work in finance. That's why I joined an investment club at school, where we analyze companies and share our own reports. On top of that, I work part-time at a café, so my schedule is pretty packed. When I do get some free time, I usually go for a long walk or catch a movie to clear my head. So yeah, that's pretty much who I am."},
+ desc:{q:"Describe your home to me. What does it look like?", a:"Sure. So I live in a small but cozy place in the northwestern part of Seoul. Honestly, the best thing about my home is the location. It's just a few minutes from the bus stop, and there's a hiking trail near the neighborhood, so I can go for a walk whenever I want. Inside, there's a living room, a small kitchen, and my room at the end of the hallway. My room isn't huge, but it's really practical. I have a wooden desk by the window, a bookshelf packed with economics books, and a bed that I probably spend way too much time in. What I like the most is the natural light. In the morning, sunlight pours in through the window, and it kind of gives me the energy to start the day. So yeah, it's not fancy at all, but it's the place where I feel the most relaxed."},
+ routine:{q:"What do you usually do to prepare for a trip?", a:"Well, I'd say I'm a pretty organized traveler, so I always prepare a lot before a trip. First of all, I decide where to go and check the weather, because that pretty much decides what I'm going to pack. Then I book everything online, like the train tickets and the accommodation. I usually compare a few websites, since prices can be totally different. A few days before I leave, I make a checklist on my phone. To be honest, in the past, I never did that, and I ended up forgetting my charger almost every single time, which was so annoying. These days, I just go through the list the night before, and I can pack my bag in about twenty minutes. Finally, on the morning of the trip, I double-check my ID and my tickets. I've realized that the more I prepare, the less stressed I am on the actual trip. So that's pretty much my routine."},
+ past:{q:"Have you ever had a problem at home? What happened?", a:"Oh, that reminds me of something that happened last winter. It was one of the coldest nights of the year, and when I came home from my part-time job, the heating in our house just stopped working. At first, I thought it was a simple problem, so I tried turning the boiler off and on again, but nothing happened. The thing is, it was almost midnight, so the repair service wasn't available. Long story short, my family and I had to sleep under three blankets, and honestly, it really tested my patience. The next morning, I called the service center as soon as it opened, and a technician came over around noon. It turned out that a small part inside the boiler was broken, so he replaced it in about thirty minutes, which was such a relief. Since then, I always check the boiler before winter starts. Looking back, it's kind of a funny story now, but at the time, it was pretty miserable."},
+ compare:{q:"How is the technology people use today different from when you were a child?", a:"These days, I pretty much do everything with my smartphone. I check the news, I manage my money, and I even read company reports on it. Honestly, I can't imagine a single day without it. But when I was a kid, things were totally different. Back then, my family had one desktop computer in the living room, and we had to take turns using it. If I wanted to look something up, I had to wait until my parents were done with it, which was so frustrating. Also, phones were just for calling and texting, and the internet was really slow. Now, on the other hand, everything is instant and personal. I think the biggest change is convenience, because we can get any information in a few seconds. That being said, I sometimes feel like I'm way too dependent on my phone. So yeah, technology has made life a lot easier, but it definitely has its downsides."},
+ rp_ask:{q:"You want to join a new gym. Call the gym and ask three or four questions.", a:"Hi, is this Fit Zone Gym? Hello, my name is Alex. I just moved to this neighborhood, and I'm thinking about signing up for a membership, so I was wondering if I could ask you a few questions. First of all, what are your opening hours? I usually work out late at night, so I'd like to know if you're open after ten. Oh, really? Until midnight? That's perfect. Next, how much is a monthly membership, and do you have any discounts for students? I see. Also, are personal training sessions included, or do I have to pay for them separately? Okay, got it. Lastly, is there a shower room and lockers I can use? Great. Thank you so much for your help. I'll think about it and probably drop by this weekend. Have a good one!"},
+ rp_problem:{q:"You can't make it to a meeting with your friend. Call, explain, and suggest alternatives.", a:"Hey Minji, it's me, Alex. I'm really sorry to call you so suddenly, but I have some bad news. I know we were supposed to meet for dinner tonight, but I don't think I can make it. The thing is, my manager at the café just called me, and the person who was supposed to work tonight is sick, so I have to cover his shift. I feel terrible, because we planned this a week ago. So, I have a couple of ideas. First, how about meeting this Saturday instead? I'm totally free in the afternoon, and dinner will be on me. Or, if you'd rather not wait, we could grab a late-night snack after my shift ends at eleven. Another option is just to move our reservation to next Friday, since the restaurant is pretty flexible. Just let me know what works best for you. Again, I'm so sorry, and call me back when you get this. Bye!"},
+ rp_exp:{q:"Tell me about a time when you had to cancel plans with someone.", a:"Actually, something similar happened to me about a year ago. I had planned a trip to Busan with two of my friends, and we had already booked the train tickets and a guesthouse. But two days before the trip, I suddenly got a call about a job interview that was scheduled for the exact same day. Honestly, I was so torn, because I'd been looking forward to the trip for weeks. In the end, I decided to go to the interview, so I called my friends and explained the situation. I was worried they'd be upset, but they were really understanding. We ended up changing the train tickets to the next weekend, and I paid the cancellation fee for the guesthouse, since it was my fault. Looking back, it was the right decision, and the trip was even more fun because we had more time to plan it. I learned that being honest right away really makes things easier."},
+ adv_compare:{q:"Compare how people managed their money in the past with how they manage it now.", a:"When it comes to managing money, I think the way people do it has changed dramatically. These days, most young people handle everything through apps. For example, I check my bank account, pay my bills, and even buy stocks on my phone in just a few taps. But my parents' generation was totally different. Back then, people had to visit the bank in person, wait in line, and write everything down in a bankbook. Also, most people just kept their money in savings accounts, because interest rates were pretty high and investing felt risky. Now, on the other hand, a lot of people in their twenties are into stocks, ETFs, and even crypto. Personally, I think this shift has pros and cons. It's great that investing is more accessible, but at the same time, some people jump in without understanding the risks. So I'd say the tools have gotten way better, but financial knowledge hasn't really caught up yet."},
+ adv_issue:{q:"Tell me about the housing problems in your country and how they affect young people.", a:"Well, one of the biggest issues in Korea right now is housing prices, especially in Seoul. Honestly, it's something my friends and I talk about all the time. The problem is that apartment prices have gone up so much over the past decade that it's almost impossible for young people to buy a home with just their salary. Even rent has become really expensive, so a lot of people in their twenties and thirties end up living in tiny studios or staying with their parents much longer. As a result, many young people are putting off getting married or having kids, which is also connected to Korea's low birth rate. The government has tried a lot of policies, like loans for first-time buyers, but they haven't really solved the problem. In my opinion, the government should focus on supplying more affordable housing near job centers, rather than just changing loan rules. Anyway, I really hope things get better by the time I start working full-time."},
+ rp_eva:{q:"I also like going to the movies. Ask me three or four questions.", a:"Oh, you like movies too? That's awesome, because I'm a huge movie fan myself. I'm curious, so let me ask you a few questions. First, what kind of movies do you usually watch? Are you more into action movies or dramas? Also, do you usually go to the theater, or do you just watch movies at home on Netflix? And who do you usually go with? Lastly, what's the best movie you've seen recently? I'm always looking for recommendations, so I'd love to hear about it. Thanks, Eva!"}
+};
+
+const EXPR = [
+ ['시작 · 메인 포인트',[["Well, let me think for a sec.","음, 잠깐 생각해볼게요"],["That's a tough one, but I'd say ~","어려운 질문인데, 제 생각엔 ~"],["Oh, that reminds me of ~","아, 그러고 보니 ~가 생각나네요"],["When it comes to ~, I'd say ~","~에 관해서라면 ~"],["To be honest, ~ / Honestly, ~","솔직히 말하면"],["For the most part, ~ / In general, ~","대체로"],["I'm all about ~","나는 완전 ~가 제일 중요해 (be all about)"]]],
+ ['시간 · 배경',[["Back when I was in high school, ~","고등학교 때"],["It was about two years ago, ~","2년 전쯤이었는데"],["From what I remember, ~","내 기억으로는"],["The other day, ~","얼마 전에"],["At the time, ~ / Back then, ~","그때는"]]],
+ ['전개 · 반전',[["At first, ~","처음엔"],["Then, all of a sudden, ~","그러다 갑자기"],["The thing is, ~","문제는 말이야"],["To make matters worse, ~","설상가상으로"],["It turned out that ~","알고 보니"],["Long story short, ~","간단히 말하면"],["I ended up ~ing","결국 ~하게 됐다"],["I had no choice but to ~","~할 수밖에 없었다"]]],
+ ['감정 (같은 단어 반복 금지)',[["I found it so frustrating / annoying.","진짜 짜증났다"],["It really tested my patience.","인내심 한계였다"],["~, which was such a relief.","정말 다행이었다"],["I was over the moon.","너무 기뻤다"],["I was completely blown away.","완전 감탄했다"],["It really got on my nerves.","신경 거슬렸다"],["I was so torn.","엄청 갈등했다"],["I find it highly enjoyable.","정말 즐겁다"]]],
+ ['묘사',[["It's located right next to ~","~ 바로 옆에 있어요"],["It's within walking distance.","걸어갈 수 있는 거리"],["It's pretty spacious / cozy / packed with ~","꽤 넓다/아늑하다/~로 꽉 차 있다"],["What I like the most about it is that ~","제일 좋은 점은 ~"],["It's the kind of place where ~","~하는 그런 곳"]]],
+ ['비교 (과거 ↔ 현재)',[["These days, ~ / Back then, ~","요즘은 / 그때는"],["I used to ~, but now I ~","예전엔 ~했는데 지금은"],["In the past, I barely ~","예전엔 거의 ~ 안 했다"],["My perspective on ~ has changed.","~에 대한 생각이 바뀌었다"],["On the other hand, ~","반면에"],["We never really had to worry about ~","예전엔 ~ 걱정할 필요가 없었다"],["Things have changed a lot since then.","그 후로 많이 바뀌었다"]]],
+ ['의견 · 이슈 (Q14-15)',[["Personally, I think ~ / The way I see it, ~","개인적으로 / 내가 보기엔"],["One of the biggest issues these days is ~","요즘 가장 큰 이슈 중 하나는"],["As a result, ~","그 결과"],["That being said, ~","그렇긴 하지만"],["It has pros and cons.","장단점이 있다"],["The government should ~","정부가 ~해야 한다"],["Can you imagine?","상상이 돼요?"],["We are starting to have a serious ~ issue.","심각한 ~ 문제가 생기기 시작했다"]]],
+ ['롤플레이: 질문',[["I'm calling because ~","~ 때문에 전화했어요"],["I was wondering if ~","혹시 ~인지 궁금해서요"],["Do you mind if I ask you a few questions?","몇 가지 여쭤봐도 될까요?"],["Could you tell me ~?","~ 알려주실 수 있나요?"],["Is it possible to ~?","~ 가능한가요?"],["How much would it cost to ~?","~하는 데 얼마죠?"],["I'll think about it and get back to you.","생각해보고 다시 연락드릴게요"]]],
+ ['롤플레이: 문제 해결',[["I'm afraid I can't make it.","못 갈 것 같아"],["Something came up.","일이 생겼어"],["How about ~ instead?","대신 ~ 어때?"],["Another option is to ~","다른 방법은 ~"],["If that doesn't work for you, we could ~","그게 안 되면 ~할 수도 있어"],["Would it be possible to ~?","~하는 게 가능할까요?"],["Just let me know what works best for you.","편한 걸로 알려줘"]]],
+ ['마무리',[["So yeah, that's pretty much it.","네, 대충 그 정도예요"],["At the end of the day, ~","결국엔"],["Looking back, ~","돌이켜 보면"],["Anyway, that's my usual routine.","아무튼 이게 제 루틴이에요"],["That's why I ~","그래서 제가 ~해요"]]],
+ ['막혔을 때 (strategy 점수)',[["What I mean is ~","내 말은"],["Let me put it this way.","이렇게 말해볼게요"],["How should I put it...","뭐라고 해야 하지"],["It's kind of like ~","약간 ~ 같은 거"],["As I mentioned before, ~","아까 말했듯이 (즉흥 느낌, 오픽노잼)"],["Going back to what I said, ~","아까 얘기로 돌아가면"]]]
+];
+
+const COMMON_ERRORS = [
+ ['3인칭 단수 -s 누락','She like → She likes / My mom go → My mom goes'],
+ ['조동사·to 뒤 과거형','didn\'t went → didn\'t go / can bought → can buy'],
+ ['one of the + 복수','one of the most famous restaurant → restaurants'],
+ ['수량 + 복수','many friend → many friends / there is many → there are many'],
+ ['불가산 명사 복수','informations, furnitures, advices, homeworks → information, furniture, advice, homework'],
+ ['불필요한 전치사','discuss about, explain about, contact to, marry with → discuss, explain, contact, marry'],
+ ['I\'m agree / I very like','I agree / I really like'],
+ ['감정 형용사 -ing/-ed','I was boring → I was bored / I\'m interesting in → I\'m interested in'],
+ ['what ~ like','how it looks like → what it looks like'],
+ ['since vs for','since 3 years → for 3 years'],
+ ['과거 경험 중 현재시제','Last year I go there → went (시제 체크 Q4·6·7·9·10·13)'],
+ ['go to home','go to home → go home']
+];
+
+const SOURCES = [
+ ['멀티캠퍼스 OPIc 가이드북 (첨부 PDF) p.13 평가영역·등급 설명, p.71 FAQ (1문항 1분~2분30초)',''],
+ ['OPIc 공지: 영어 자동 채점(Machine Scoring) 적용 (2026-10-29~)','https://www.opic.or.kr/opics/servlet/controller.opic.site.opiclounge.NoticeServlet?p_gubun=1&p_process=move-view&p_seq=642'],
+ ['한국경제: 영어 OPIc AI 채점 도입, 시험·등급 기준은 그대로','https://www.hankyung.com/article/202610292490P'],
+ ['강지완 오픽TV: 오픽AI채점의 비밀 (LTI 자료, ASR 힌트)','https://www.youtube.com/watch?v=ApY2-F5-hPs'],
+ ['강지완 오픽TV: IH/AL 채점기준 (세부진단서 항목)','https://www.youtube.com/watch?v=zmamhX5s3Fg'],
+ ['강지완 오픽TV: IM2와 IH를 나누는 3가지 채점기준','https://www.youtube.com/watch?v=BLOLtPcw33s'],
+ ['오즐하: IH vs AL 답변 비교 (필러·연결어·감정)','https://www.youtube.com/watch?v=D4ZaOUq48CY'],
+ ['오픽노잼: IH 실제 답변, 이것만 알면 AL (5단계 모델)','https://www.youtube.com/watch?v=aYk7wc9nhdU'],
+ ['오픽노잼: 날씨 콤보 IH vs AL','https://www.youtube.com/watch?v=bkbI39plph0'],
+ ['오픽노잼: 비교 질문 답변법','https://www.youtube.com/watch?v=PI2FFtUS-oM'],
+ ['오픽노잼: 영어 잘하는데 왜 계속 IM1?','https://www.youtube.com/watch?v=oLivwcfQ9V4'],
+ ['주책임: IM2 IH AL 실제 답변 비교','https://www.youtube.com/watch?v=_38Au_sIJhM'],
+ ['오픽치료사 에릭노: NH~AL 등급별 답변 예시','https://www.youtube.com/watch?v=xepJLIi_V1A'],
+ ['Ringle: 원어민 AL 모의고사 15문항','https://www.youtube.com/watch?v=cetbpzBVNqI'],
+ ['hi바라: AL 실제답변 2025','https://www.youtube.com/watch?v=jE894U6kKc4']
+];
+</script>
+<script>
+/* =========================================================
+   UTIL / STORAGE
+   ========================================================= */
+const $=(s,el=document)=>el.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(x,a=0,b=100)=>Math.max(a,Math.min(b,x));
+const lin=(x,x0,x1)=>clamp((x-x0)/(x1-x0)*100);
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const fmt=s=>{s=Math.max(0,Math.round(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const R=v=>v==null?null:Math.round(v);
+const store={get(k,d){try{const v=localStorage.getItem('opicAL_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('opicAL_'+k,JSON.stringify(v))}catch(e){toast('저장 공간 부족: 기록 일부를 지워줘')}}};
+function toast(m,ms=2400){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),ms)}
+const sc=v=>v==null?'mute':v>=75?'s-good':v>=55?'s-mid':'s-bad';
+const barColor=v=>v>=75?'var(--good)':v>=55?'var(--warn)':'var(--bad)';
+const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const IS_MOBILE=IS_IOS||/Android|Mobile/i.test(navigator.userAgent);
+const DEF={topics:['movies','concerts','music','park','walking','domtravel','abroad','staycation','housing'],difficulty:6,showText:false,autoRecord:!IS_IOS,inputMode:'voice',instantFb:false,voiceName:'',rate:0.95,provider:'openai',apiKey:'',model:'',recAudio:true};
+let AC=null;
+function getAC(){try{if(!AC||AC.state==='closed')AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume()}catch(e){}return AC}
+let S=Object.assign({},DEF,store.get('settings',{}));
+const saveS=()=>store.set('settings',S);
+let HIST=store.get('history',[]);
+let PRAC=store.get('practice',[]);
+const saveH=()=>store.set('history',HIST);
+const saveP=()=>store.set('practice',PRAC);
+const AUDIO={};
+const LV=['NH','IL','IM1','IM2','IM3','IH','AL'];
+const DIMS=[['task','과제 수행'],['tense','시제 통제'],['text','문단 구성'],['connect','연결어·복문'],['vocab','어휘 폭'],['accuracy','문법 정확성'],['fluency','유창성'],['volume','발화량']];
+const DIMW={task:.22,tense:.14,text:.12,connect:.10,vocab:.12,accuracy:.13,fluency:.10,volume:.07};
+const cnt=(re,s)=>{const m=s.match(new RegExp(re.source,'g'));return m?m.length:0};
+const has=(re,s)=>new RegExp(re.source).test(s);
+
+/* =========================================================
+   ANALYSIS ENGINE (heuristic)
+   ========================================================= */
+const RX={
+ open:/\b(well|oh|okay|ok|alright|all right|so|sure|hmm|um|let me (think|see|tell you|talk|start)|that'?s an? (good|great|interesting|tough|nice|hard) (question|one)|when it comes to|honestly|to be honest|i'?d (like|love) to (talk|tell|share)|you know what|i'?d say|in general|for the most part|actually|wow)\b/,
+ close:/\b(so yeah|that'?s (pretty much |about |basically )?(it|all)|all in all|overall|in the end|at the end of the day|anyway|anyways|long story short|that'?s (why|the reason)|i guess that'?s|in short|to sum (it )?up|this is (my|how|why|what)|so that'?s|looking back|bye|thank you|thanks)\b/,
+ feel:/\b(because|that'?s why|the reason|what i (really )?(like|love|enjoy)|i (really |absolutely |just )?(like|love|enjoy|hate|prefer|adore)|my favorite|favorite (thing|part)|i find it|makes me (feel|happy)|i feel)\b/,
+ adj:/\b(big|small|huge|spacious|cozy|modern|old|new|bright|dark|clean|quiet|noisy|crowded|beautiful|stunning|gorgeous|comfortable|wide|narrow|tall|long|colorful|wooden|white|black|green|brown|gray|grey|fancy|simple|lovely|calm|peaceful|busy|tiny|massive|neat|messy|cute|famous|popular|expensive|cheap|affordable|convenient|delicious|fresh|warm|cool|chilly|humid|packed|vibrant|lively|charming|practical|sleek|retro|traditional|friendly|kind|strict|funny|smart)\b/,
+ overview:/\b(located|near|next to|close to|across|around|minutes|called|it'?s a|there'?s a|there is a|there are|my favorite|in the (middle|center|heart)|on the \w+ floor|i live|i go to|i usually)\b/,
+ freq:/\b(usually|always|often|normally|sometimes|typically|generally|every (day|morning|night|evening|week|weekend|time|month|year)|once a|twice a|\w+ times a|whenever|on weekends|most of the time|rarely|barely)\b/,
+ seq:/\b(first|first of all|firstly|then|after that|afterwards|afterward|next|before|once|as soon as|finally|lastly|eventually|by the time|later|meanwhile|second|secondly)\b/,
+ anchor:/\b(last (year|month|week|summer|winter|spring|fall|autumn|weekend|time|semester|night)|(\w+|a couple of|a few) (years?|months?|weeks?|days?) ago|when i was|back (in|then|when)|one day|yesterday|in (19|20)\d\d|a while ago|recently|the other day|at that time|that day|that night|this one time)\b/,
+ event:/\b(suddenly|all of a sudden|but|however|unfortunately|it turned out|turns out|out of nowhere|the problem was|the thing is|to make matters worse|surprisingly|to my surprise)\b/,
+ pfeel:/\b(felt|i was (so |really |pretty |very |totally |super |a little |kind of )?\w+|which was|i found it|it was (so |really |pretty |super |just )?\w+|relief|relieved|couldn'?t believe|tested my patience)\b/,
+ result:/\b(in the end|finally|eventually|ended up|since then|ever since|from then on|i learned|i'?ve learned|i realized|i'?ve realized|lesson|looking back|now i|after that|so now|these days i)\b/,
+ pastSide:/\b(used to|back then|in the past|when i was|years ago|back in the day|previously|at that time|in those days|when we were|decades ago)\b/,
+ nowSide:/\b(now|nowadays|these days|today|currently|at the moment|now that)\b/,
+ contrast:/\b(but|whereas|while|on the other hand|compared to|compared with|unlike|than|in contrast|however|different|changed|differences?)\b/,
+ reason:/\b(because|since|due to|thanks to|that'?s why|the reason|as a result|which means)\b/,
+ example:/\b(for example|for instance|such as|like when|a good example|take \w+ for example)\b/,
+ opinion:/\b(i think|in my opinion|personally|i believe|the way i see it|i'?d say|i feel like|in my view|if you ask me)\b/,
+ greet:/\b(hi|hello|hey|good (morning|afternoon|evening)|is this|this is|it'?s me)\b/,
+ purpose:/\b(i'?m calling|calling (because|to|about)|i'?d like to|i would like to|i want to|i'?m (thinking|planning) (about|of|to)|i was wondering|i have (a few|some|a couple of) questions|do you mind if|the reason i'?m calling)\b/,
+ rpclose:/\b(thank|thanks|appreciate|talk to you|see you|bye|call you back|get back to you|have a (good|nice|great)|let me know|call me back)\b/,
+ problem:/\b(the thing is|unfortunately|i'?m afraid|it turns out|turned out|there'?s a problem|there is a problem|something came up|i can'?t|i won'?t be able|i couldn'?t|the problem is|because|broke|broken|damaged|charged twice|canceled|cancelled|wrong)\b/,
+ apology:/\b(sorry|apologize|apologies|my bad|i feel (bad|terrible)|i understand|i hope you understand|i'?d really appreciate|i'?m afraid)\b/,
+ issue:/\b(issue|issues|problem|problems|concern|concerns|concerned|worried|worry|controversial|debate|news|crisis)\b/,
+ cause:/\b(because|due to|the reason|caused by|since|that'?s why|thanks to|one reason)\b/,
+ effect:/\b(as a result|which (means|leads|led|makes|made)|leads? to|led to|affects?|affected|impact|consequences?|end up|ends up|so a lot of|so many people)\b/,
+ solution:/\b(should|need to|needs to|have to|has to|must|solution|solve|the government|policy|policies|i hope|it would be (better|great|nice|good)|we could)\b/,
+ evaLead:/\b(eva|you said|you mentioned|i heard|i'?m curious|i'?d like to (know|ask)|let me ask|that'?s (awesome|great|cool|interesting)|you like)\b/
+};
+
+const CONN={
+ '이유':['because','since','so','that\'s why','as a result','due to','thanks to','which is why','therefore'],
+ '대조':['but','however','although','though','even though','whereas','while','on the other hand','unlike','instead','yet','still'],
+ '추가':['also','plus','on top of that','besides','in addition','not only','as well','what\'s more','moreover','another'],
+ '순서':['first','then','after that','afterwards','eventually','finally','in the end','before','until','as soon as','once','later','meanwhile','next'],
+ '관계사':['which','who','where','whose','that i','that we','the one that'],
+ '조건':['if','unless','as long as','in case','otherwise'],
+ '예시':['for example','for instance','such as','like when','especially'],
+ '정리':['anyway','long story short','at the end of the day','all in all','overall','so yeah','in short']
+};
+const CONN_RE=[];
+for(const [cat,arr] of Object.entries(CONN)) for(const p of arr) CONN_RE.push({cat,p,re:new RegExp('\\b'+p.replace(/'/g,"'?").replace(/ /g,'\\s+')+'\\b','g')});
+
+const ADVX=['to be honest','long story short','at the end of the day','the thing is','from what i remember','it is what it is','such a relief','i found it','tested my patience','on top of that','not only','as far as i know','when it comes to','i\'m into','i\'m all about','can\'t get enough','over the moon','a blast','out of this world','it turned out','turns out','ended up','all of a sudden','out of nowhere','needless to say','believe it or not','looking back','in hindsight','to make matters worse','on the other hand','compared to','these days','back in the day','used to','ever since','i couldn\'t help','the bottom line','in a nutshell','game changer','worth it','hands down','no wonder','that being said','having said that','if i had to pick','what i like about','what i mean is','let me put it this way','pretty much','i\'d say','had no choice but','i\'ve realized','my perspective','can you imagine','within walking distance','the kind of place','i was so torn','blown away','got on my nerves','as i mentioned','for the most part','i\'m a big fan','pros and cons','i was wondering if','would it be possible','what works best','i\'m afraid','something came up','make it'];
+const ADVX_RE=ADVX.map(p=>({p,re:new RegExp('\\b'+p.replace(/'/g,"'?").replace(/ /g,'\\s+')+'\\b','g')}));
+
+const OVER={good:['great','solid','impressive','decent'],nice:['pleasant','lovely','cozy','charming'],very:['super','incredibly','extremely','pretty'],really:['super','totally','genuinely','seriously'],great:['amazing','fantastic','awesome','incredible'],delicious:['mouth-watering','flavorful','out of this world'],beautiful:['gorgeous','stunning','breathtaking','picturesque'],big:['huge','spacious','massive'],fun:['enjoyable','a blast','entertaining'],happy:['thrilled','over the moon','relieved','delighted'],interesting:['fascinating','eye-opening','intriguing'],bad:['terrible','awful','frustrating','a nightmare'],many:['tons of','plenty of','a bunch of','countless'],important:['crucial','essential','key'],tired:['exhausted','worn out','drained'],amazing:['incredible','mind-blowing','unbelievable'],think:["I'd say",'personally','the way I see it']};
+const OVER_TH={very:5,really:5,think:5,many:4};
+
+const IRR=new Set("was were had did went saw got took made came said told thought bought brought felt found gave knew left lost met paid ran sat sent spent stood taught understood woke wore won wrote ate drank drove flew forgot heard kept led meant rode sang slept spoke broke began chose caught fell fought grew held hid sold shot swam threw became built bit blew dealt dug fed froze hung lit rang rose sank shook stole stuck struck swore tore wept could didn't wasn't weren't couldn't hadn't".split(' '));
+const ADJ_ED=new Set('interested excited tired bored surprised scared worried located called named crowded married supposed related based packed decorated designed detailed advanced experienced talented relaxed stressed satisfied pleased amazed shocked disappointed frustrated confused embarrassed exhausted prepared organized dedicated motivated focused involved concerned limited furnished renovated required need feed speed seed bed red shed indeed hundred weed proceed succeed exceed bleed breed greed deed reed sled wed united skilled balanced mixed beloved naked wicked sacred kindred'.split(' '));
+const BASEV=new Set('go like love enjoy think want live work play watch listen eat take make get feel need know see visit use try spend study meet buy prefer come stay walk run say tell call look find give keep start leave read hang drink cook clean help bring wear have do hate miss check usually always often'.split(' '));
+const isPast=w=>IRR.has(w)||(w.length>4&&w.endsWith('ed')&&!ADJ_ED.has(w));
+
+function tenseCounts(low){
+ let t=' '+low+' ';
+ t=t.replace(/\b(i think|i guess|i mean|you know|i remember|i believe|that'?s pretty much it|that'?s it|it is what it is|it'?s what it is|to be honest|i'?d say|kind of|sort of|i feel like|let me|let'?s|looking back|you know what i mean|what i mean is)\b/g,' ');
+ t=t.replace(/\b(i)'m\b/g,'$1 am').replace(/\b(it|that|there|he|she|what|this|here)'s\b/g,'$1 is').replace(/\b(we|they|you)'re\b/g,'$1 are').replace(/\b(i|we|they|you)'ve\b/g,'$1 have');
+ const w=t.match(/[a-z']+/g)||[];
+ let past=0,pres=0,fut=0,modal=0,perf=0;
+ for(let i=0;i<w.length;i++){
+  const x=w[i],p=w[i-1]||'',n=w[i+1]||'';
+  if(x==='used'&&n==='to'){past++;continue}
+  if(isPast(x)){ if(!(p==='have'||p==='has'||p==='had'||p==='been'||p==='be'||p==='being'||p==='get'||p==='got'||p==='is'||p==='are'||p==='am')) past++; else if(p==='have'||p==='has') perf++; continue}
+  if(['am','is','are',"isn't","aren't",'do','does',"don't","doesn't"].includes(x)){pres++;continue}
+  if((x==='have'||x==='has')){ if(isPast(n)||n==='been') perf++; else pres++; continue}
+  if(['i','we','they','you','people'].includes(p)&&BASEV.has(x)&&!['usually','always','often'].includes(x)){pres++;continue}
+  if(['he','she','it'].includes(p)&&x.endsWith('s')&&(BASEV.has(x.slice(0,-1))||BASEV.has(x.slice(0,-2))||x==='goes'||x==='does')){pres++;continue}
+  if(x==='will'||(x==='going'&&n==='to'&&w[i+2]&&!['the','a','my','school','work'].includes(w[i+2]))){fut++;continue}
+  if(['would','should','could','might','must'].includes(x)) modal++;
+ }
+ return {past,pres,fut,modal,perf};
+}
+
+function countQ(low){
+ const pats=[/\b(do|does|did|can|could|would|will|should|have|has|may|are) (you|we|they|there|i)\b(?! (know|mean|see)\b)/,
+  /\b(is|was|were) (it|there|this|that|he|she)\b(?! (is|was)\b)/,
+  /\b(what|how|when|where|which|who|why)( kind of \w+| sort of \w+| type of \w+| time| much| long| many| often| else| \w+)? (do|does|did|is|are|was|were|can|could|would|will|should) (you|we|it|they|there|he|she|i|your|the|this|that)\b/,
+  /\b(how much|how long|how many|how often|what time|what about|how about|i was wondering if|i'?d like to know|could you tell me|do you know if|is it possible|would it be possible|any chance)\b/,/\?/];
+ const pos=[];
+ for(const p of pats){const re=new RegExp(p.source,'g');let m;while((m=re.exec(low))){pos.push(m.index);if(m[0].length===0)re.lastIndex++}}
+ pos.sort((a,b)=>a-b);let c=0,last=-999;for(const p of pos){if(p-last>28){c++;last=p}}
+ return c;
+}
+const ALT=/\b(instead|how about|what about|why don'?t (we|you|i)|we (could|can) (also |just )?\w+|maybe we (can|could)|maybe i (can|could)|another (option|idea|way|alternative)|alternatively|if (that'?s|it'?s|this is) not (possible|okay|ok)|if not|if that doesn'?t work|would it be possible|is it possible|could you (please )?(give|send|refund|exchange|change|move|check|fix|replace)|i (can|could) (come|pay|wait|bring|pick|meet)|one option|the other option|or (maybe )?(we|i|you) (could|can))\b/;
+function countAlt(low){const re=new RegExp(ALT.source,'g');let m,pos=[];while((m=re.exec(low)))pos.push(m.index);let c=0,last=-999;for(const p of pos){if(p-last>20){c++;last=p}}return c}
+
+const ERR=[
+ {re:/(?<!\b(?:does|did|do|can|could|will|would|should|might|must|to|let|make|made|help|helped|saw|watched|heard|let's|doesn't|didn't|won't|can't|cannot|may)\s)\b(?:he|she|my (?:mom|mother|dad|father|friend|brother|sister|teacher|professor|boss))\s+(?:go|like|have|do|want|live|work|make|take|watch|play|say|think|know|need|love|enjoy|get|come|look|seem|use|try|study|tell)\b/g,m:'3인칭 단수 -s 누락',f:'he/she + 동사-s (likes, goes, has)'},
+ {re:/\b(?:didn'?t|did not|doesn'?t|does not|don'?t|do not|can'?t|cannot|couldn'?t|won'?t|will|would|should|can|could|must|might)\s+(?:went|saw|ate|took|came|got|bought|made|did|had|gave|told|said|found|felt|left|wrote|drove|ran|spent|was|were)\b/g,m:'조동사 뒤 과거형',f:"조동사 + 동사원형 (didn't go, can buy)"},
+ {re:/\bto\s+(?:went|saw|ate|took|came|bought|gave|told|wrote|drove|spent)\b/g,m:'to 뒤 과거형',f:'to + 동사원형 (to go, to buy)'},
+ {re:/\b(?:more|most) (?:better|bigger|easier|happier|worse|best|biggest|cheaper|faster|larger|smaller)\b/g,m:'이중 비교',f:'more better → better'},
+ {re:/\b(?:discuss|explain|mention|describe) about\b/g,m:'불필요한 about',f:'discuss/explain/mention/describe + 목적어 바로'},
+ {re:/\b(?:contact to|marry with|reach to|enter into)\b/g,m:'불필요한 전치사',f:'contact him / marry her / reach the station'},
+ {re:/\b(?:informations|furnitures|advices|homeworks|equipments|luggages|baggages|feedbacks|stuffs|knowledges|evidences|musics|softwares)\b/g,m:'불가산명사 복수',f:'information, furniture, advice (s 없음)'},
+ {re:/\b(?:a|an) (?:information|advice|furniture|homework|luggage|equipment|knowledge)\b/g,m:'불가산명사 앞 a/an',f:'a piece of advice / some information'},
+ {re:/\b(?:i am|i'm|i was) agree\b/g,m:'agree는 동사',f:'I agree'},
+ {re:/\bi (?:very|so) (?:like|love|enjoy|want|hate)\b/g,m:'very + 동사 X',f:'I really like / I like it a lot'},
+ {re:/\b(?:many|several|a few|various|two|three|four|five|six|ten|a couple of|lots of|a lot of|plenty of) (?:friend|place|thing|restaurant|movie|song|country|city|book|class|person|member|store|tree|flower|singer|game|picture|photo|question|cafe|park)\b/g,m:'수량 표현 + 복수형',f:'many friends, two places'},
+ {re:/\bthere (?:is|was|'s) (?:many|so many|two|three|four|five|several)\b/g,m:'there is + 복수',f:'there are / there were'},
+ {re:/\bpeople (?:is|was|has|likes|wants|goes|thinks|doesn'?t)\b/g,m:'people은 복수',f:'people are/were/have'},
+ {re:/\b(?:go|went|come|came|going|coming|get|got) to home\b/g,m:'go home (to 없음)',f:'go home / came home'},
+ {re:/\bi was (?:go|do|eat|watch|play|study|work|live|want|see|buy|take|make)\b/g,m:'be동사 + 동사원형',f:'I went / I was going'},
+ {re:/\b(?:we|they|you) was\b/g,m:'주어-동사 수일치',f:'we/they/you were'},
+ {re:/(?<!\b(?:if|wish)\s)\b(?:he|she) were\b/g,m:'주어-동사 수일치',f:'he/she was'},
+ {re:/\b(?:i|we|they) (?:is|has)\b/g,m:'주어-동사 수일치',f:'I am/have, they are/have'},
+ {re:/(?<!\b(?:does|did|do|will|would|can|could|should|to|let|might|must|make|made|may)\s)\b(?:he|she) (?:have|are|don'?t)\b/g,m:'주어-동사 수일치',f:"he/she has / is / doesn't"},
+ {re:/\b(?:make|made|let|makes|lets) (?:me|him|her|us|them) to\b/g,m:'사역동사 + to X',f:'make me feel (to 없음)'},
+ {re:/\b(?:i'?m|i am|i was|we were) (?:boring|confusing|tiring)\b/g,m:'감정 형용사 -ing/-ed',f:'I was bored (내가 지루한 사람 X)'},
+ {re:/\bi'?m interesting in\b|\bi am interesting in\b/g,m:'감정 형용사 -ing/-ed',f:"I'm interested in"},
+ {re:/\b(?:was|is|were|are|be) (?:happened|occurred|disappeared)\b/g,m:'자동사 수동태 X',f:'it happened'},
+ {re:/\bhow (?:it|this|that|he|she|they) (?:looks?|is|was) like\b/g,m:'how ~ like X',f:'what it looks like'},
+ {re:/\bsince (?:\d+|two|three|four|five|a few|several|many) (?:years|months|weeks|days|hours)\b/g,m:'since vs for',f:'for 3 years / since 2020'},
+ {re:/\bin (?:last|next|this) (?:year|month|week|summer|winter|spring|fall|weekend|semester)\b/g,m:'last/next/this 앞 in X',f:'last year (in 없음)'},
+ {re:/\bthe most \w+est\b|\bthe most best\b/g,m:'이중 최상급',f:'the biggest'},
+ {re:/\bdespite of\b/g,m:'despite of X',f:'despite / in spite of'},
+ {re:/\b(?:suggest|suggested|recommend|recommended) (?:me|him|her|them) to\b/g,m:'suggest + 사람 + to X',f:'suggest that I ~ / suggest ~ing'}
+];
+function findErrors(low){
+ const out=[];
+ for(const e of ERR){const re=new RegExp(e.re.source,'g');let m;while((m=re.exec(low))){out.push({s:m.index,e:m.index+m[0].length,txt:m[0],m:e.m,f:e.f})}}
+ const re=/\bone of (?:the|my|our|his|her) /g;let m;
+ while((m=re.exec(low))){const rest=low.slice(m.index+m[0].length).match(/[a-z']+/g)||[];const nx=rest.slice(0,4);
+  const ok=nx.some(w=>(w.endsWith('s')&&!['is','was','has','this','us','its','his'].includes(w))||['people','children','men','women'].includes(w));
+  if(!ok&&nx.length){const end=m.index+m[0].length+nx.slice(0,3).join(' ').length;out.push({s:m.index,e:Math.min(end,low.length),txt:low.slice(m.index,end),m:'one of the + 복수',f:'one of the best restaurants (복수명사)'})}}
+ out.sort((a,b)=>a.s-b.s);
+ return out.filter((x,i,a)=>i===0||x.s>=a[i-1].e);
+}
+function mattr(words,win=30){
+ if(words.length<win){return words.length?new Set(words).size/words.length:0}
+ let sum=0,n=0;for(let i=0;i+win<=words.length;i+=3){sum+=new Set(words.slice(i,i+win)).size/win;n++}return sum/n;
+}
+function kwHits(words,kw){let c=0;for(const k of kw){if(words.some(w=>w===k||w.startsWith(k)&&w.length<=k.length+3))c++}return c}
+
+function analyze(Q,ans){
+ const T=TYPES[Q.t];
+ const raw=(ans.transcript||'').replace(/[’‘]/g,"'").replace(/\s+/g,' ').trim();
+ const low=raw.toLowerCase();
+ const words=(low.match(/[a-z']+/g)||[]).filter(w=>!['um','uh','erm','hmm','uhm'].includes(w));
+ const nW=words.length;
+ const res={dims:{},issues:[],good:[],elements:[],metrics:{words:nW},errors:[],over:[],slips:[],hi:[]};
+ if(nW<3){for(const [k] of DIMS)res.dims[k]=0;res.dims.fluency=null;res.total=0;res.issues.push({sev:'bad',dim:'volume',t:'답변이 거의 없음',d:'인식된 단어가 없어. 무응답은 UR/최저 등급 위험 (가이드북 FAQ 4·10).',f:'모르는 주제라도 아는 경험으로 끌고 와서 최소 1분은 말하기.'});return res}
+ const first=words.slice(0,14).join(' '), first50=words.slice(0,50).join(' '), last=words.slice(-30).join(' ');
+ const qWords=(Q.q.toLowerCase().match(/[a-z']+/g)||[]).filter(w=>w.length>3&&!STOPQ.has(w));
+ const kw=Q.kw||[];
+ const pre=w=>w.slice(0,5);const wPre=new Set(words.map(pre));
+ const kh=kwHits(words,kw), qo=new Set(qWords.filter(w=>wPre.has(pre(w)))).size;
+ const isAdv=Q.t==='adv_compare'||Q.t==='adv_issue';
+ const onTopic=isAdv?(kh>=2||qo>=3):(kh+qo>=1);
+ res.metrics.onTopic=onTopic;
+ res.metrics.kwHits=kh;res.metrics.qOverlap=qo;
+ // ---------- elements / task
+ const E=(label,ok,fix,part)=>res.elements.push({label,ok:!!ok,fix,part:part==null?(ok?1:0):part});
+ const adjN=cnt(RX.adj,low), seqN=cnt(RX.seq,low), qN=countQ(low), altN=countAlt(low);
+ res.metrics.questions=qN;res.metrics.alts=altN;
+ const isRP=['rp_ask','rp_problem','rp_eva'].includes(Q.t);
+ switch(Q.t){
+  case 'intro':E('기본 정보(이름/신분)',has(/\b(my name is|i'?m a|i am a|years old|call me|i'?m \w+ and)\b/,low),'My name is ~, and I\'m a ~ student');E('학교·전공/하는 일',has(/\b(major|majoring|university|college|student|school|work(ing)? (at|for|as)|job|intern)\b/,low),'I\'m majoring in ~ at ~');E('취미·관심사',has(/\b(free time|hobby|hobbies|enjoy|into|fan of|like to|love to|spare time|weekends?)\b/,low),'When I have free time, I ~');E('목표·요즘 하는 일',has(/\b(plan|planning|want to (be|become|work)|goal|dream|future|hope to|career|preparing|these days)\b/,low),'These days, I\'m preparing for ~');break;
+  case 'desc':E('대상 소개(무엇·어디)',has(RX.overview,first50)||kh>=1,'It\'s located ~ / There\'s a ~ called ~');E('구체 묘사 (형용사 3개+)',adjN>=3,'spacious, cozy, packed with ~ 처럼 형용사 다양하게',Math.min(1,adjN/3));E('감정·이유 (why)',has(RX.feel,low),'What I like the most about it is that ~');E('메인 포인트 먼저(초반 50단어)',has(RX.feel,first50)||kh>=1&&has(RX.overview,first50),'첫 20초 안에 핵심 한 문장');break;
+  case 'routine':E('빈도 표현',has(RX.freq,low),'usually / every weekend / whenever I ~');E('순서 연결어 2개+',seqN>=2,'First, ~ Then, ~ After that, ~',Math.min(1,seqN/2));E('이유·감정',has(RX.feel,low),'I do this because ~ / I find it ~');E('과거 대비·깨달음 (AL 5단계)',has(RX.pastSide,low)||has(/\b(i'?ve realized|i realized|i'?ve learned|my perspective)\b/,low),'In the past, I barely ~ / I\'ve realized that ~');break;
+  case 'past':case 'rp_exp':E('시간 배경 (언제)',has(RX.anchor,low),'It was about two years ago, ~ / Last winter, ~');E('사건·반전',has(RX.event,low),'The thing is, ~ / All of a sudden, ~');E('그때 감정',has(RX.pfeel,low),'I was so ~ / which was such a relief');E('결과·교훈',has(RX.result,low),'In the end, ~ / Since then, ~ / I learned that ~');if(Q.t==='rp_exp')E('앞 상황과 연결',has(/\b(similar|same thing|something like (that|this)|actually|that reminds me)\b/,low),'Actually, something similar happened to me ~');break;
+  case 'compare':case 'adv_compare':E('과거 묘사',has(RX.pastSide,low)||has(/\bwhen i was\b/,low),'Back then, ~ / I used to ~');E('현재 묘사',has(RX.nowSide,low),'These days, ~ / Nowadays, ~');E('대조 연결어',has(RX.contrast,low),'On the other hand, ~ / whereas ~');E('변화의 이유',has(RX.reason,low),'This is mainly because ~');if(Q.t==='adv_compare'){E('구체적 예시',has(RX.example,low),'For example, ~');E('내 의견',has(RX.opinion,low),'Personally, I think ~ has pros and cons')}break;
+  case 'adv_issue':E('이슈 제시',has(RX.issue,low),'One of the biggest issues these days is ~');E('원인',has(RX.cause,low),'The main reason is that ~');E('영향/결과',has(RX.effect,low)||has(/\bso\b/,low)&&nW>80,'As a result, ~ / which leads to ~');E('내 의견',has(RX.opinion,low),'In my opinion, ~');E('해결책·전망',has(RX.solution,low),'The government should ~ / I hope ~');E('구체적 사례',has(RX.example,low)||has(/\b(my friends?|i know|i read|i saw|in the news)\b/,low),'For example, my friend ~ / I read in the news that ~');break;
+  case 'rp_ask':E('인사·신원',has(RX.greet,first),'Hi, is this ~? My name is ~');E('용건 밝히기',has(RX.purpose,low),'I\'m calling because ~ / I was wondering if ~');E('질문 3개+ (현재 '+qN+'개)',qN>=3,'질문 3~4개: 가격/시간/포함사항/배송',Math.min(1,qN/3));E('마무리 인사',has(RX.rpclose,last),'Thanks so much. I\'ll think about it and call you back.');break;
+  case 'rp_problem':E('인사',has(RX.greet,first),'Hi, this is ~');E('문제 상황 설명',has(RX.problem,low),'The thing is, ~ / I\'m afraid ~');E('사과·공감·정중함',has(RX.apology,low),'I\'m really sorry about this / I\'d really appreciate it');E('대안 2개+ (현재 '+altN+'개)',altN>=2,'How about ~ instead? / Another option is ~ / If that doesn\'t work, we could ~',Math.min(1,altN/2));E('선택 요청·마무리',has(RX.rpclose,last),'Just let me know what works best for you.');break;
+  case 'rp_eva':E('리액션·도입',has(RX.evaLead,first50)||has(RX.open,first),'Oh, you like ~ too? I\'m curious.');E('질문 3개+ (현재 '+qN+'개)',qN>=3,'What kind of ~? / Do you usually ~? / Who do you ~ with?',Math.min(1,qN/3));E('마무리',has(RX.rpclose,last),'Thanks, Eva!');break;
+ }
+ let task=res.elements.length?res.elements.reduce((a,e)=>a+e.part,0)/res.elements.length*100:70;
+ if(!onTopic&&Q.t!=='intro'){task*=0.7;res.issues.push({sev:'bad',dim:'task',t:'주제 이탈 의심',d:'질문 핵심어가 답변에 거의 없어 (주제어 '+kh+'개). 외운 스크립트를 끼워 넣으면 질문 의도와 어긋나기 쉬움. 2026-10-29부터 영어 OPIc은 AI 자동채점이라 특히 위험할 수 있다는 분석이 있음 (강지완).',f:'질문 핵심 단어를 첫 문장에 그대로 받아서 시작: "So, my favorite ~ is ~"'})}
+ res.dims.task=task;
+ // ---------- tense
+ const tc=tenseCounts(low);res.metrics.tense=tc;
+ let tense=null;
+ if(T.tense==='past'){const r=tc.past/Math.max(1,tc.past+tc.pres);res.metrics.pastRatio=r;tense=lin(r,0.45,0.82);if(tc.past<4)tense*=tc.past/4;
+  const slipRe=new RegExp('\\b(last \\w+|yesterday|\\w+ ago|when i was \\w+|one day|that day|back then)\\b[^.?!]{0,40}?\\b(i|we|he|she|they|it|my \\w+)\\s+(go|is|are|am|have|has|do|see|get|take|make|come|say|tell|buy|eat|feel|want|think|like|goes|says|gets|takes|comes|looks)\\b','g');let m;while((m=slipRe.exec(low))&&res.slips.length<3)res.slips.push(raw.substr(m.index,m[0].length));}
+ else if(T.tense==='present'){const r=tc.pres/Math.max(1,tc.pres+tc.past);res.metrics.presRatio=r;tense=lin(r,0.3,0.62)}
+ else if(T.tense==='mixed'){tense=0.32*lin(tc.past,1,5)+0.32*lin(tc.pres,1,5)+0.18*(has(RX.pastSide,low)?100:0)+0.18*(has(RX.nowSide,low)?100:0)}
+ else if(T.tense==='any'){const forms=[tc.pres>0,tc.past>0,tc.fut>0,tc.modal>0,tc.perf>0].filter(Boolean).length;res.metrics.tenseForms=forms;tense=lin(forms,1,4)}
+ res.dims.tense=tense;
+ // ---------- connectors
+ const found={},cats=new Set();let connTotal=0;
+ for(const c of CONN_RE){const re=new RegExp(c.re.source,'g');let m;while((m=re.exec(low))){connTotal++;found[c.p]=(found[c.p]||0)+1;cats.add(c.cat);res.hi.push({s:m.index,e:m.index+m[0].length,c:'c-conn',p:3,tt:'연결어 ('+c.cat+')'})}}
+ const distinct=Object.keys(found).length;
+ res.metrics.connDistinct=distinct;res.metrics.connCats=[...cats];
+ res.dims.connect=0.5*lin(distinct,2,10)+0.5*lin(cats.size,1,6);
+ // ---------- text type
+ const opener=isRP?has(RX.greet,first)||has(RX.open,first):has(RX.open,first)||has(/\b(let me|i'?d like to|so my|my favorite)\b/,first);
+ const closer=isRP?has(RX.rpclose,last):has(RX.close,last);
+ const bodyN=cnt(RX.seq,low)+cnt(/\b(also|plus|on top of that|besides|another|in addition|not only)\b/,low);
+ const linkRatio=connTotal/Math.max(1,nW/14);
+ const main=isRP?has(RX.purpose,first50)||has(RX.problem,first50)||qN>0:(kh>=1&&words.slice(0,50).some(w=>kw.some(k=>w.startsWith(k))))||has(RX.feel,first50);
+ res.metrics.opener=opener;res.metrics.closer=closer;
+ res.dims.text=(opener?20:0)+(closer?20:0)+(main?20:0)+0.2*lin(bodyN,0,3)+0.2*lin(linkRatio,0.35,1.0);
+ // ---------- vocab
+ const content=words.filter(w=>!STOP.has(w));
+ const mt=mattr(words);res.metrics.mattr=mt;
+ let excess=0;
+ for(const [k,alts] of Object.entries(OVER)){const th=OVER_TH[k]||4;const n=k==='think'?cnt(/\bi think\b/,low):words.filter(w=>w===k).length;if(n>=th){excess+=n-th+1;res.over.push({w:k,n,alts});const re=new RegExp('\\b'+(k==='think'?'i think':k)+'\\b','g');let m;while((m=re.exec(low)))res.hi.push({s:m.index,e:m.index+m[0].length,c:'c-rep',p:2,tt:'반복 '+n+'회 → '+alts.join(', ')})}}
+ const advFound=new Set();
+ for(const a of ADVX_RE){const re=new RegExp(a.re.source,'g');let m;while((m=re.exec(low))){advFound.add(a.p);res.hi.push({s:m.index,e:m.index+m[0].length,c:'c-exp',p:4,tt:'좋은 표현'})}}
+ res.metrics.adv=[...advFound];
+ const dc=new Set(content.filter(w=>w.length>2)).size;res.metrics.distinctContent=dc;
+ const longW=content.filter(w=>w.length>=7).length/Math.max(1,content.length);res.metrics.longRatio=longW;
+ res.dims.vocab=0.25*lin(mt,0.55,0.75)+0.25*lin(dc,12,55)+0.1*lin(longW,0.08,0.22)+0.2*clamp(100-excess*22)+0.2*lin(advFound.size,0,4);
+ // ---------- accuracy
+ const errs=findErrors(low);res.errors=errs.map(e=>({txt:raw.slice(e.s,e.e),m:e.m,f:e.f}));
+ for(const e of errs)res.hi.push({s:e.s,e:e.e,c:'c-err',p:5,tt:e.m+' → '+e.f});
+ const ePer=errs.length/nW*100;res.metrics.errPer100=ePer;
+ res.dims.accuracy=clamp(100-ePer*22-(res.slips.length*8));
+ // ---------- past verb highlight
+ if(T.tense==='past'||T.tense==='mixed'){const re=/[a-z']+/g;let m;while((m=re.exec(low))){if(isPast(m[0])||(m[0]==='used'&&low.substr(m.index,7)==='used to'))res.hi.push({s:m.index,e:m.index+m[0].length,c:'c-past',p:1,tt:'과거형'})}}
+ // ---------- fluency
+ let flu=null;
+ if(ans.mode==='voice'&&ans.dur){
+  const sd=Math.max(5,ans.speechDur||ans.dur);const wpm=nW/(sd/60);res.metrics.wpm=wpm;
+  const ws=wpm<55?20:wpm<100?20+(wpm-55)/45*80:wpm<=170?100:wpm<=200?85:70;
+  const pr=(ans.pauses||0)/(sd/60);res.metrics.pauseRate=pr;const ps=clamp(100-pr*28);
+  const lat=ans.latency;const ls=lat==null?80:lat<=3?100:lat>=10?40:100-(lat-3)/7*60;
+  const conf=ans.conf;const cs=conf?lin(conf,0.6,0.9):null;
+  const rep=cnt(/\b(\w+) \1\b/,low);res.metrics.repeats=rep;
+  if(ans.audioAnalysis===false)flu=cs==null?ws:(0.65*ws+0.35*cs);
+  else flu=cs==null?(0.45*ws+0.4*ps+0.15*ls):(0.35*ws+0.35*ps+0.1*ls+0.2*cs);flu=clamp(flu-rep*4);
+ }
+ res.dims.fluency=flu;
+ // ---------- volume
+ const [wmin,wmax]=T.words;let vol=nW<wmin?lin(nW,wmin*0.35,wmin):nW>wmax*1.5?clamp(100-(nW-wmax*1.5)/wmax*120):100;
+ if(ans.mode==='voice'&&ans.dur>200){vol=Math.min(vol,70);}
+ res.dims.volume=vol;
+ // ---------- shrink toward 50 when there is too little evidence (short answers)
+ const ev=Math.min(1,nW/T.words[0]);for(const k of ['tense','accuracy','vocab']){const v=res.dims[k];if(v!=null&&v>45)res.dims[k]=45+(v-45)*ev}
+ // ---------- total
+ let sw=0,ss=0;for(const [k] of DIMS){const v=res.dims[k];if(v==null)continue;sw+=DIMW[k];ss+=DIMW[k]*v}
+ res.total=ss/sw;if(!onTopic&&Q.t!=='intro')res.total*=0.9;
+ const short=nW/T.words[0];if(short<0.6)res.total*=0.55+0.45*(short/0.6);
+ // ---------- issues
+ buildIssues(Q,ans,res,{nW,T,tc,distinct,cats,opener,closer,main,mt,advFound,qN,altN});
+ return res;
+}
+const STOP=new Set('a an the and or but so to of in on at for with from by as is are was were be been being am i you he she it we they me my your his her its our their them us this that these those there here do does did have has had not no yes very really just like um uh oh well then than too also can could will would should may might must if when where what which who how why because about up out into over after before all some any more most much many one get got go went i\'m it\'s that\'s don\'t'.split(' '));
+const STOPQ=new Set('tell about what your when where which there have does like would know detail details much many could things thing some describe happened happen also with that this they from been were them their into more most made make other first time times give \'d i\'d you\'re you\'ve kind kinds'.split(' '));
+
+function buildIssues(Q,ans,res,x){
+ const I=(sev,dim,t,d,f)=>res.issues.push({sev,dim,t,d,f});
+ const D=res.dims;
+ const miss=res.elements.filter(e=>e.part<1);
+ if(miss.length){I(D.task<60?'bad':'warn','task','질문 요구사항 빠짐: '+miss.map(e=>e.label).join(', '),'유형('+x.T.name+')에서 기대하는 요소가 안 보였어.',miss.map(e=>'• '+e.label+': '+e.fix).join('\n'))}
+ if(Q.t==='rp_problem'&&x.altN<2)I('bad','task','Q12형 문제해결: 대안이 부족함','대안 '+x.altN+'개. 진단서 기준으로 "상황 해결 성공(succeeds)"이 IH 이상, "unable to resolve"면 IM2에 머문다는 분석 (강지완).','대안 최소 2개 + 선택 요청: "How about ~ instead? Or, if that doesn\'t work, we could ~. Just let me know."');
+ if(D.tense!=null&&D.tense<65){
+  if(x.T.tense==='past')I(D.tense<45?'bad':'warn','tense','과거시제 통제 부족 (과거형 비율 '+Math.round((res.metrics.pastRatio||0)*100)+'%)','과거 경험 문항(보통 Q4·6·7·9·10·13)에서 과거형이 약하면 최대 IH에 막힌다는 진단서 분석. '+(res.slips.length?'예: "'+res.slips[0]+'"':''),'스토리 동사는 끝까지 과거로 (go→went, is→was). 녹음→받아쓰기로 시제만 따로 체크하는 연습 추천.');
+  else if(x.T.tense==='mixed')I('warn','tense','과거-현재 대비가 약함','비교 문항인데 과거 '+x.tc.past+'개 / 현재 '+x.tc.pres+'개 동사. 둘 다 분명히 보여줘야 함.','Back then, I used to ~. But these days, I ~.');
+  else if(x.T.tense==='present')I('warn','tense','묘사/루틴인데 현재시제가 약함','현재 습관·상태 질문이면 현재시제가 기본.','I usually ~ / It is ~ / There are ~');
+  else if(x.T.tense==='any')I('warn','tense','시제·구문 다양성 부족','이슈 문항은 현재(상황)+과거(변화)+조동사(should/would)+미래(전망)를 섞어야 깊이가 보임.','It has gotten worse over the years. The government should ~. I think it will ~.');
+ }
+ if(D.text<60)I(D.text<40?'bad':'warn','text','문단 구성이 약함 (문장 나열 느낌)',[!x.opener&&'도입 멘트 없음',!x.main&&'초반에 핵심(메인 포인트)이 안 보임',!x.closer&&'마무리 멘트 없음'].filter(Boolean).join(' / ')+'. IM과 IH/AL의 가장 큰 차이가 문단 단위 발화라는 분석 (강지완 Scale 항목, Q2·5·8).','도입(Well, ~) → 메인 포인트 → 근거 2~3개 → 마무리(So yeah, that\'s pretty much it.)');
+ if(D.connect<60)I('warn','connect','연결어·복문이 단조로움 (종류 '+x.distinct+'개)','사용 범주: '+([...x.cats].join(', ')||'거의 없음')+'. AL 정의: "적절한 위치에서 접속사를 사용해 결속력이 높다" (가이드북 p.13).','which/where 관계사, although/whereas 대조, as soon as/by the time 시간절을 섞어봐.');
+ if(D.vocab<60||res.over.length){I(D.vocab<60?'warn':'warn','vocab',res.over.length?'같은 표현 반복: '+res.over.map(o=>o.w+' '+o.n+'회').join(', '):'어휘 폭이 좁음 (다양도 '+x.mt.toFixed(2)+')','같은 단어 반복은 "Breadth of Vocabulary" 체크로 IH 상한이 된다는 진단서 분석 (강지완).',res.over.length?res.over.map(o=>'• '+o.w+' → '+o.alts.join(', ')).join('\n'):'묘사 형용사·감정 표현을 문항마다 다르게 (I found it frustrating / which was such a relief).')}
+ if(res.errors.length){const g={};for(const e of res.errors)(g[e.m]=g[e.m]||[]).push(e);I(D.accuracy<60?'bad':'warn','accuracy','문법 오류 '+res.errors.length+'개',Object.entries(g).map(([m,a])=>m+': "'+a[0].txt+'"').join(' / '),Object.entries(g).map(([m,a])=>'• '+a[0].f).join('\n'))}
+ if(D.fluency!=null&&D.fluency<65){const m=res.metrics;I(D.fluency<45?'bad':'warn','fluency','유창성 경고','속도 '+Math.round(m.wpm||0)+' WPM'+(ans.pauses?(', 2.5초+ 멈춤 '+ans.pauses+'회'):'')+(ans.latency!=null?(', 첫 마디까지 '+ans.latency.toFixed(1)+'초'):'')+(ans.conf?(', 인식 신뢰도 '+Math.round(ans.conf*100)+'%'):'')+'. 2~3초 이상 끊기면 Fluency 감점 항목 (강지완).','막히면 침묵 대신 필러/전략 표현: "Let me think...", "What I mean is ~", "How should I put it...". 인식 신뢰도가 낮으면 발음·강세 점검.')}
+ if(ans.mode==='voice'&&ans.conf&&ans.conf<0.75)I('warn','fluency','음성 인식이 불안정 (신뢰도 '+Math.round(ans.conf*100)+'%)','영어 OPIc은 AI 채점이고, 음성→텍스트(ASR) 변환을 거칠 수 있다는 분석이 있어. 인식이 잘 안 되는 단어는 발음 체크 포인트.','인식 결과에서 틀리게 받아쓴 단어를 찾아서 그 단어만 따로 또박또박 연습.');
+ if(D.volume<60)I(D.volume<40?'bad':'warn','volume','발화량 부족 ('+x.nW+'단어)','이 유형 목표: '+x.T.words[0]+'~'+x.T.words[1]+'단어 / '+x.T.sec[0]+'~'+x.T.sec[1]+'초. IM1의 가장 큰 약점이 "말을 너무 적게" (오픽노잼).','메인 포인트 하나에 이유·예시·감정 2~3개를 붙여서 늘리기.');
+ if(ans.mode==='voice'&&ans.dur>200)I('warn','volume','답변이 너무 김 ('+fmt(ans.dur)+')','AL 답변은 90초 안팎이 적당, 3분 가까운 IH 답변은 TMI로 핵심이 흐려진다는 지적 (오픽노잼·주책임). 40분 안에 15문항도 빠듯.','메인 포인트 1개 + 부연 1~2문장씩만. 1분 30초~2분에서 정리.');
+ for(const [k,l] of DIMS){if(D[k]!=null&&D[k]>=82)res.good.push(l)}
+}
+
+function levelOf(score){return score>=80?'AL':score>=70?'IH':score>=62?'IM3':score>=54?'IM2':score>=45?'IM1':score>=35?'IL':'NH'}
+function summarize(qs){
+ const W=t=>t==='intro'?0.3:t==='rp_problem'?1.3:(t==='adv_compare'||t==='adv_issue')?1.4:1;
+ let sw=0,ss=0;const dimAvg={};
+ for(const [k] of DIMS){let a=0,n=0;for(const q of qs){const v=q.res&&q.res.dims[k];if(v!=null&&q.t!=='intro'){a+=v;n++}}dimAvg[k]=n?a/n:null}
+ for(const q of qs){if(!q.res)continue;sw+=W(q.t);ss+=W(q.t)*q.res.total}
+ const overall=sw?ss/sw:0;let lv=levelOf(overall);const caps=[];
+ const cap=(L,why)=>{caps.push({L,why});if(LV.indexOf(lv)>LV.indexOf(L))lv=L};
+ const pastQ=qs.filter(q=>q.res&&TYPES[q.t].tense==='past');
+ if(pastQ.length){const a=pastQ.reduce((s,q)=>s+(q.res.dims.tense||0),0)/pastQ.length;if(a<60)cap('IH','과거 경험 문항 시제 평균 '+Math.round(a)+'점: 과거시제 통제가 약하면 IH가 상한이라는 진단서 분석')}
+ const q12=qs.find(q=>q.t==='rp_problem'&&q.res);if(q12&&q12.res.dims.task<60)cap('IM2','문제해결 롤플레이(Q12) 과제 점수 '+Math.round(q12.res.dims.task)+': 해결 실패(unable)면 IM2라는 진단서 분석');
+ if(dimAvg.volume!=null&&dimAvg.volume<45)cap('IM1','평균 발화량 부족: 말을 너무 적게 하면 IM1 패턴');
+ const adv=qs.filter(q=>q.res&&(q.t==='adv_compare'||q.t==='adv_issue'));if(adv.length){const a=adv.reduce((s,q)=>s+q.res.total,0)/adv.length;if(a<66)cap('IH','고난도(Q14-15) 평균 '+Math.round(a)+'점: AL은 사회적 이슈를 정확하고 넓은 어휘로 다뤄야 함')}
+ if(dimAvg.vocab!=null&&dimAvg.vocab<55)cap('IH','어휘 폭 평균 '+Math.round(dimAvg.vocab)+': 같은 표현 반복 시 IH 상한');
+ const answered=qs.filter(q=>q.res&&q.res.metrics.words>=3).length;if(answered<qs.length-2)cap(levelOf(overall*0.85),'미응답 문항 '+(qs.length-answered)+'개');
+ const weak=DIMS.filter(([k])=>dimAvg[k]!=null).sort((a,b)=>dimAvg[a[0]]-dimAvg[b[0]]).slice(0,3).map(([k,l])=>({k,l,v:dimAvg[k]}));
+ return {overall,level:lv,raw:levelOf(overall),caps,dimAvg,weak};
+}
+
+/* =========================================================
+   SPEECH: TTS + RECORDER + ASR
+   ========================================================= */
+let VOICES=[];
+function loadVoices(){VOICES=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang))}
+if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function pickVoice(){if(S.voiceName){const v=VOICES.find(v=>v.name===S.voiceName);if(v)return v}return VOICES.find(v=>/en-US/i.test(v.lang)&&/Google US English|Samantha|Jenny|Aria|Female/i.test(v.name))||VOICES.find(v=>/en-US/i.test(v.lang))||VOICES[0]}
+function speak(text){return new Promise(res=>{if(!('speechSynthesis' in window))return res();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=S.rate||0.95;const v=pickVoice();if(v)u.voice=v;u.onend=res;u.onerror=res;speechSynthesis.speak(u);const guard=setInterval(()=>{if(!speechSynthesis.speaking){clearInterval(guard);res()}},500)})}
+function beep(){try{const ac=getAC();const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=880;g.gain.value=0.08;o.connect(g);g.connect(ac.destination);o.start();setTimeout(()=>{o.stop()},180)}catch(e){}}
+
+const Rec={
+ reset(){this.chunks=[];this.finalText='';this.interim='';this.confs=[];this.firstSpeech=null;this.lastSpeech=null;this.silStart=null;this.pauseList=[];this.level=0;this.srErr=null;this.active=false},
+ async start(onUpd){
+  this.reset();this.t0=performance.now();this.stream=null;this.mr=null;this.an=null;
+  if(S.recAudio!==false){
+  this.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}});
+  try{this.mr=new MediaRecorder(this.stream);this.mr.ondataavailable=e=>{if(e.data.size)this.chunks.push(e.data)};this.mr.start(1000)}catch(e){this.mr=null}
+  this.ac=getAC();const src=this.ac.createMediaStreamSource(this.stream);this.src=src;this.an=this.ac.createAnalyser();this.an.fftSize=1024;src.connect(this.an);}
+  const buf=this.an?new Float32Array(this.an.fftSize):null;
+  this.t0=performance.now();let floor=null;const calib=[];
+  if(this.an)this.iv=setInterval(()=>{this.an.getFloatTimeDomainData(buf);let s=0;for(let i=0;i<buf.length;i++)s+=buf[i]*buf[i];const rms=Math.sqrt(s/buf.length);const t=performance.now();this.level=Math.min(1,rms/0.12);
+   if(t-this.t0<450){calib.push(rms);onUpd&&onUpd();return}
+   if(floor==null){calib.sort((a,b)=>a-b);floor=calib[Math.floor(calib.length*0.2)]||0.004}
+   const thr=Math.max(0.012,floor*2.8);
+   if(rms>thr){if(this.firstSpeech==null)this.firstSpeech=t;if(this.silStart!=null&&t-this.silStart>=2500)this.pauseList.push((t-this.silStart)/1000);this.silStart=null;this.lastSpeech=t}
+   else if(this.firstSpeech!=null&&this.silStart==null)this.silStart=t;
+   onUpd&&onUpd()},60);
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;this.active=true;
+  if(SR){const r=new SR();r.lang='en-US';r.continuous=true;r.interimResults=true;
+   r.onresult=e=>{let im='';for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal){this.finalText+=x[0].transcript.trim()+' ';if(x[0].confidence>0)this.confs.push(x[0].confidence)}else im+=x[0].transcript}this.interim=im;onUpd&&onUpd()};
+   r.onerror=e=>{if(e.error!=='no-speech'&&e.error!=='aborted')this.srErr=e.error;onUpd&&onUpd()};
+   r.onend=()=>{if(this.active){try{r.start()}catch(e){}}};
+   this.recog=r;try{r.start()}catch(e){this.srErr='start-failed'}}
+  else{this.recog=null;this.srErr='unsupported'}
+ },
+ async stop(){
+  this.active=false;clearInterval(this.iv);
+  if(this.recog){try{this.recog.stop()}catch(e){}}
+  await new Promise(r=>setTimeout(r,800));
+  if(this.mr&&this.mr.state!=='inactive'){await new Promise(r=>{this.mr.onstop=r;this.mr.stop()})}
+  let url=null;if(this.chunks.length){url=URL.createObjectURL(new Blob(this.chunks,{type:(this.mr&&this.mr.mimeType)||'audio/webm'}))}
+  try{this.stream.getTracks().forEach(t=>t.stop())}catch(e){}try{this.src&&this.src.disconnect()}catch(e){}
+  const now=performance.now();const dur=this.t0?(now-this.t0)/1000:0;
+  const text=(this.finalText+' '+(this.interim||'')).replace(/\s+/g,' ').trim();
+  const conf=this.confs.length?this.confs.reduce((a,b)=>a+b,0)/this.confs.length:null;
+  return {audioUrl:url,transcript:text,dur,speechDur:this.firstSpeech!=null?((this.lastSpeech-this.firstSpeech)/1000):dur,latency:this.firstSpeech!=null?(this.firstSpeech-this.t0)/1000:null,pauses:this.pauseList.length,pauseList:this.pauseList,conf,srErr:this.srErr,audioAnalysis:!!this.an};
+ },
+ abort(){this.active=false;clearInterval(this.iv);try{this.recog&&this.recog.abort()}catch(e){}try{this.mr&&this.mr.state!=='inactive'&&this.mr.stop()}catch(e){}try{this.stream.getTracks().forEach(t=>t.stop())}catch(e){}try{this.src&&this.src.disconnect()}catch(e){}}
+};
+</script>
+<script>
+/* =========================================================
+   APP STATE / UI
+   ========================================================= */
+const NAV=[['home','홈'],['mock','모의고사'],['practice','유형별 연습'],['history','기록'],['rubric','평가기준'],['bank','표현·모범답변'],['settings','설정']];
+let VIEW='home',SES=null,REP=null,PSEL={t:'past',topic:''},LLMOUT={},MICTEST=null;
+const app=$('#app');
+const norm=t=>(t||'').replace(/[\u2019\u2018]/g,"'").replace(/\s+/g,' ').trim();
+const curQ=()=>SES.qs[SES.idx];
+const newCur=()=>({phase:'ready',replayUsed:false,peeked:false,shown:Date.now(),ans:null});
+
+function go(v){if(SES&&SES.cur&&SES.cur.phase==='rec'){if(!confirm('녹음 중이야. 나갈까?'))return;Rec.abort();SES.cur.phase='ready'}speechSynthesis&&speechSynthesis.cancel();VIEW=v;render();window.scrollTo(0,0)}
+function render(){
+ $('#nav').innerHTML=NAV.map(([k,l])=>'<button data-a="nav" data-v="'+k+'" class="'+(VIEW===k?'on':'')+'">'+l+'</button>').join('');
+ app.innerHTML=(VIEWS[VIEW]||VIEWS.home)();
+}
+function dday(){const d=(new Date(EXAM_DATE)-Date.now())/86400000;$('#dday').innerHTML=d>0?'OPIc 시험 <b>D-'+Math.ceil(d)+'</b> · 11/25(수) 18:20':'시험일 지남'}
+
+function bars(d){return DIMS.map(([k,l])=>{const v=d[k];return '<div class="bar"><div class="lab">'+l+'</div><div class="tr"><i style="width:'+(v==null?0:v)+'%;background:'+(v==null?'#333':barColor(v))+'"></i></div><div class="v '+sc(v)+'">'+(v==null?'-':Math.round(v))+'</div></div>'}).join('')}
+function issueHtml(i){return '<div class="issue '+(i.sev==='bad'?'bad':'')+'"><b>'+esc(i.t)+'</b><div class="small">'+esc(i.d)+'</div>'+(i.f?'<div class="small" style="margin-top:4px;white-space:pre-wrap"><span class="tag acc">이렇게</span> '+esc(i.f)+'</div>':'')+'</div>'}
+function highlight(raw,res){
+ raw=norm(raw);if(!raw)return '<span class="mute">(답변 없음)</span>';
+ const hs=(res.hi||[]).slice().sort((a,b)=>b.p-a.p||a.s-b.s);const acc=[];
+ for(const h of hs){if(!acc.some(a=>h.s<a.e&&h.e>a.s))acc.push(h)}
+ acc.sort((a,b)=>a.s-b.s);let out='',i=0;
+ for(const h of acc){out+=esc(raw.slice(i,h.s))+'<span class="'+h.c+'" title="'+esc(h.tt)+'">'+esc(raw.slice(h.s,h.e))+'</span>';i=h.e}
+ return out+esc(raw.slice(i));
+}
+const LEGEND='<div class="legend small"><span class="c-err">문법 오류</span> <span class="c-exp">좋은 표현</span> <span class="c-conn">연결어</span> <span class="c-rep">반복 표현</span> <span class="c-past">과거형</span> <span class="mute">(마우스 올리거나 탭하면 설명)</span></div>';
+function metricsTable(q,res){
+ const m=res.metrics,a=q.ans||{},T=TYPES[q.t];const rows=[];
+ rows.push(['단어 수',m.words+' (목표 '+T.words[0]+'~'+T.words[1]+')']);
+ if(a.dur>=1)rows.push(['답변 시간',fmt(a.dur)+' (목표 '+fmt(T.sec[0])+'~'+fmt(T.sec[1])+')']);
+ if(m.wpm)rows.push(['말 속도',Math.round(m.wpm)+' WPM (권장 100~170)']);
+ if(a.mode==='voice'){rows.push(['2.5초+ 멈춤',(a.pauses||0)+'회']);if(a.latency!=null)rows.push(['첫 마디까지',a.latency.toFixed(1)+'초']);if(a.conf)rows.push(['음성인식 신뢰도',Math.round(a.conf*100)+'%'])}
+ if(m.pastRatio!=null)rows.push(['과거형 비율',Math.round(m.pastRatio*100)+'% (목표 80%+)']);
+ if(m.presRatio!=null)rows.push(['현재형 비율',Math.round(m.presRatio*100)+'%']);
+ if(m.tense&&T.tense==='mixed')rows.push(['과거/현재 동사',m.tense.past+' / '+m.tense.pres]);
+ if(m.tenseForms!=null)rows.push(['시제·조동사 종류',m.tenseForms+'종']);
+ rows.push(['연결어',m.connDistinct+'종 ('+(m.connCats||[]).join(', ')+')']);
+ rows.push(['어휘 다양도(MATTR)',(m.mattr||0).toFixed(2)+' (IM ~0.55 / AL 0.70+ 추정)']);
+ rows.push(['좋은 표현',(m.adv||[]).length?m.adv.join(', '):'없음']);
+ rows.push(['문법 오류',res.errors.length+'개']);
+ if(['rp_ask','rp_eva'].includes(q.t))rows.push(['질문 수',m.questions+'개 (3개+)']);
+ if(q.t==='rp_problem')rows.push(['대안 수',m.alts+'개 (2개+)']);
+ return '<table>'+rows.map(r=>'<tr><th style="width:160px">'+r[0]+'</th><td>'+esc(r[1])+'</td></tr>').join('')+'</table>';
+}
+function qDetail(q,res,akey){
+ const T=TYPES[q.t];const s=SAMPLES[q.t];const url=akey&&AUDIO[akey];
+ return '<div class="small mute">'+T.name+' · '+esc(q.topicName||'')+(q.peeked?' · <span class="tag warn">텍스트 보고 답함</span>':'')+(q.ans&&q.ans.mode==='type'?' · <span class="tag">타이핑</span>':'')+'</div>'+
+ '<div class="qtext">'+esc(q.q)+' <button class="btn sm" data-a="say" data-text="'+esc(q.q)+'">▶</button></div>'+
+ '<h3>내 답변</h3>'+LEGEND+'<div class="tx">'+highlight(q.ans&&q.ans.transcript,res)+'</div>'+(url?'<audio controls src="'+url+'" style="width:100%;margin-top:8px"></audio>':'')+
+ '<div class="grid g2" style="margin-top:12px"><div><h3>항목 점수 <span class="score '+sc(res.total)+'">'+R(res.total)+'</span> <span class="tag">이 답변 수준 ≈ '+levelOf(res.total)+'</span></h3>'+bars(res.dims)+'</div><div><h3>측정치</h3>'+metricsTable(q,res)+'</div></div>'+
+ '<h3>부족한 점</h3>'+(res.issues.length?res.issues.map(issueHtml).join(''):'<div class="issue good"><b>큰 구멍 없음</b></div>')+
+ (res.good.length?'<div class="issue good"><b>잘한 점</b><div class="small">'+res.good.join(', ')+'</div></div>':'')+
+ '<h3>이 유형 답변 구조</h3><div class="note">'+esc(T.tpl)+'<br><span class="small">근거: '+esc(T.src)+'</span></div>'+
+ (s?'<details><summary><b>AL 예시 답변 보기</b> <span class="small mute">('+esc(s.q)+')</span></summary><div class="in"><div class="sample">'+esc(s.a)+'</div><div class="row" style="margin-top:8px"><button class="btn sm" data-a="say" data-text="'+esc(s.a)+'">▶ 듣고 쉐도잉</button><span class="small mute">예시일 뿐이야. 외우지 말고 구조·표현만 가져가 (암기 답변은 AI 채점에서 불리할 수 있음)</span></div></div></details>':'');
+}
+
+/* ---------------- test building ---------------- */
+const asQ=(t,q,topic)=>({t,q,topicName:topic.name,kw:topic.kw||[]});
+function pick3(topic){
+ const by=t=>topic.qs.filter(x=>x.t===t);
+ const used=new Set();const take=x=>{if(x)used.add(x);return x};
+ const a=take(rnd(by('desc'))||rnd(topic.qs));
+ const midPool=[...by('routine'),...by('compare')].filter(x=>!used.has(x));
+ const b=take(rnd(midPool)||rnd(topic.qs.filter(x=>!used.has(x))));
+ const c=take(rnd(by('past').filter(x=>!used.has(x)))||rnd(topic.qs.filter(x=>!used.has(x))));
+ return [a,b,c].filter(Boolean).map(x=>asQ(x.t,x.q,topic));
+}
+function buildTest(){
+ const survey=shuffle(TOPICS.filter(t=>t.kind==='survey'&&S.topics.includes(t.id)));
+ const random=shuffle(TOPICS.filter(t=>t.kind==='random'));
+ const sp=()=>survey.length?survey.shift():random.shift();
+ const qs=[{t:'intro',q:INTRO_Q,topicName:'자기소개',kw:['name','student','major','university']}];
+ const sets=[sp(),Math.random()<0.5?random.shift():sp(),Math.random()<0.6?random.shift():sp()];
+ for(const st of sets)qs.push(...pick3(st));
+ const rp=rnd(RP);for(const t of ['rp_ask','rp_problem','rp_exp'])qs.push({t,q:rp.qs[t],topicName:'롤플레이 · '+rp.name,kw:rp.kw});
+ const adv=rnd(ADV);qs.push({t:'adv_compare',q:adv.adv_compare,topicName:'고난도 · '+adv.name,kw:adv.kw});qs.push({t:'adv_issue',q:adv.adv_issue,topicName:'고난도 · '+adv.name,kw:adv.kw});
+ if(S.difficulty<=4){const e=rnd(EVA_QS);qs[14]={t:'rp_eva',q:e.q,topicName:'Eva에게 질문',kw:e.kw}}
+ return qs.slice(0,15).map((q,i)=>Object.assign(q,{n:i+1}));
+}
+function practicePool(t){
+ if(t==='intro')return [{t,q:INTRO_Q,topicName:'자기소개',kw:['name','student','major','university']}];
+ if(['rp_ask','rp_problem','rp_exp'].includes(t))return RP.map(r=>({t,q:r.qs[t],topicName:'롤플레이 · '+r.name,kw:r.kw,tid:r.id}));
+ if(t==='adv_compare'||t==='adv_issue')return ADV.map(a=>({t,q:a[t],topicName:'고난도 · '+a.name,kw:a.kw,tid:a.id}));
+ if(t==='rp_eva')return EVA_QS.map(e=>({t,q:e.q,topicName:'Eva에게 질문',kw:e.kw}));
+ const out=[];for(const tp of TOPICS)for(const x of tp.qs)if(x.t===t)out.push({t,q:x.q,topicName:tp.name,kw:tp.kw,tid:tp.id});return out;
+}
+
+/* ---------------- views ---------------- */
+const VIEWS={};
+VIEWS.home=()=>{
+ const rec=HIST.slice(0,3);let avg=null;
+ if(rec.length){avg={};for(const [k] of DIMS){const v=rec.map(r=>r.sum.dimAvg[k]).filter(x=>x!=null);avg[k]=v.length?v.reduce((a,b)=>a+b,0)/v.length:null}}
+ const weak=avg?DIMS.filter(([k])=>avg[k]!=null).sort((a,b)=>avg[a[0]]-avg[b[0]]).slice(0,3):[];
+ const pc=PRAC.length;
+ return '<h1>오늘도 한 세트 해보자</h1>'+
+ '<div class="grid g2">'+
+ '<div class="card"><h3 style="margin-top:0">시작</h3><div class="row"><button class="btn pri" data-a="nav" data-v="mock">실전 모의고사 15문항</button><button class="btn" data-a="nav" data-v="practice">유형별 1문항 연습</button></div><p class="small mute">모의고사: 서베이 기반 자동 출제(자기소개 → 서베이/돌발 3콤보 → 롤플레이 → Q14-15 고난도), Eva 음성으로 질문, 녹음+자동 받아쓰기, 끝나면 항목별 채점과 "뭐가 부족했는지" 리포트.</p></div>'+
+ '<div class="card"><h3 style="margin-top:0">최근 상태</h3>'+(rec.length?'<div class="lvlbox"><div class="lvl">'+rec[0].sum.level+'</div><div><div>최근 모의고사 '+new Date(rec[0].date).toLocaleDateString('ko-KR')+' · '+R(rec[0].sum.overall)+'점</div><div class="small mute">최근 '+rec.length+'회 평균 기준 약점: '+weak.map(([k,l])=>l+' '+R(avg[k])).join(' · ')+'</div></div></div>':'<p class="mute">아직 모의고사 기록 없음. 한 번 풀고 나면 약점이 여기 떠.</p>')+'<p class="small mute">유형별 연습 '+pc+'회</p></div>'+
+ '</div>'+
+ '<div class="card"><h3 style="margin-top:0">꼭 알아둘 것: 11/25 시험은 AI가 채점함</h3><ul class="small"><li>2026-10-29 시행 시험부터 <b>영어 OPIc은 ACTFL 공인 채점자 대신 자동 채점(Machine Scoring)</b>. 시험 형식·채점 기준·등급 의미는 그대로라고 공지됨.</li><li>강지완 분석: LTI 자료에 ASR(음성→텍스트) 논문이 참고로 달려 있어서, <b>내 말이 텍스트로 잘 인식되는지 · 주제에 맞는지 · 문법이 맞는지</b>가 중요해질 수 있음. 암기 답변이 질문과 어긋나면 크게 깎일 수 있다는 SAIL 사례도 언급. (추정이지 공식 방식 아님)</li><li>이 앱의 받아쓰기도 같은 원리(브라우저 음성인식)라, <b>인식이 이상하게 된 단어 = 발음 점검 포인트</b>로 쓰면 됨.</li></ul></div>'+
+ (weak.length?'<div class="card"><h3 style="margin-top:0">지금 제일 먼저 고칠 것</h3>'+weak.map(([k,l])=>'<div class="issue"><b>'+l+' ('+R(avg[k])+')</b><div class="small">'+esc(STUDY[k])+'</div></div>').join('')+'</div>':'');
+};
+const STUDY={
+ task:'질문을 듣고 유형(묘사/루틴/과거/비교/롤플레이)부터 판단. 유형별 연습에서 템플릿 순서대로 말하기. 롤플레이는 질문 3~4개 / 대안 2~3개를 숫자로 세면서.',
+ tense:'과거 경험 유형만 5번 연속 연습 → 리포트의 초록색(과거형) 비율을 80% 이상으로. "Last ~ / when I was ~" 뒤에 현재형이 나오면 바로 고치기.',
+ text:'모든 답변을 도입 → 메인 포인트(20초 안) → 근거 2~3개 → 마무리로. 도입/마무리 표현 3개씩만 입에 붙이기.',
+ connect:'which/where 관계사, although/whereas, as soon as/by the time를 한 답변에 최소 1개씩. "and, so, but"만 쓰면 구문 단조로움(Syntax) 감점.',
+ vocab:'반복 표현(주황색) 대체어 리스트 만들기. 형용사·감정 표현을 주제별로 5개씩 (delicious → mouth-watering, flavorful). 표현·모범답변 탭 참고.',
+ accuracy:'반복되는 오류 패턴을 기록 탭에서 확인하고 올바른 문장 3번씩 소리 내서 말하기. 특히 3인칭 -s, one of the + 복수, 수일치 (Agreement 감점 항목).',
+ fluency:'2.5초 이상 침묵을 필러(Well, let me think / What I mean is)로 채우기. 모범답변 ▶ 듣고 쉐도잉하면서 속도 100~150 WPM 맞추기. 인식 안 된 단어는 발음 연습.',
+ volume:'문항당 1분 30초 안팎. 메인 포인트 1개에 이유·예시·감정을 붙여서 늘리기. 너무 길면(3분+) 오히려 핵심이 흐려짐.'
+};
+
+VIEWS.mock=()=>{
+ if(REP)return reportView(REP);
+ if(SES&&SES.mode==='mock'){if(SES.phase==='adjust')return adjustView();if(SES.phase==='fb')return fbView();return qView()}
+ const chips=TOPICS.filter(t=>t.kind==='survey').map(t=>'<button class="chip '+(S.topics.includes(t.id)?'on':'')+'" data-a="topic" data-id="'+t.id+'">'+t.name+'</button>').join('');
+ return '<h1>실전 모의고사</h1>'+
+ '<div class="card"><h3 style="margin-top:0">1. Background Survey (내가 고를 주제)</h3><div class="chips">'+chips+'</div><p class="small mute">모의고사는 선택 주제 + 선택 안 한 돌발 주제(재활용·날씨·기술·은행 등)를 섞어서 낸다 (실제 시험도 서베이 외 문항이 나옴, 가이드북 FAQ 2). 실제로 경험 있는 주제 + 서로 묶이는 주제(영화·공연·콘서트 / 공원·걷기·조깅 / 국내·해외여행·집휴가)를 고르는 게 일반적인 전략.</p></div>'+
+ '<div class="card"><h3 style="margin-top:0">2. 난이도 · 옵션</h3><div class="grid g3">'+
+ '<div><label class="f">자가평가 난이도</label><select data-a="set" data-k="difficulty" data-num="1">'+[3,4,5,6].map(d=>'<option value="'+d+'" '+(S.difficulty==d?'selected':'')+'>'+d+(d>=5?' (Q14-15 고난도, AL 목표)':' (Q15 Eva 질문형)')+'</option>').join('')+'</select></div>'+
+ '<div><label class="f">답변 방식</label><select data-a="set" data-k="inputMode"><option value="voice" '+(S.inputMode==='voice'?'selected':'')+'>말하기 (녹음+자동 받아쓰기)</option><option value="type" '+(S.inputMode==='type'?'selected':'')+'>타이핑 (마이크 없을 때)</option></select></div>'+
+ '<div><label class="f">질문 텍스트</label><select data-a="set" data-k="showText" data-bool="1"><option value="0" '+(!S.showText?'selected':'')+'>숨기기 (실전처럼 듣기만)</option><option value="1" '+(S.showText?'selected':'')+'>보여주기</option></select></div>'+
+ '<div><label class="f">질문 끝나면 녹음 자동 시작</label><select data-a="set" data-k="autoRecord" data-bool="1"><option value="1" '+(S.autoRecord?'selected':'')+'>켜기</option><option value="0" '+(!S.autoRecord?'selected':'')+'>끄기</option></select></div>'+
+ '<div><label class="f">문항마다 바로 피드백</label><select data-a="set" data-k="instantFb" data-bool="1"><option value="0" '+(!S.instantFb?'selected':'')+'>끄기 (끝나고 한번에)</option><option value="1" '+(S.instantFb?'selected':'')+'>켜기 (공부 모드)</option></select></div>'+
+ '</div><div class="note">실제 시험: 12~15문항, 약 40분(답변 가능 시간 약 35분), 문제당 다시 듣기 1회, 필기구 불가 (가이드북 FAQ). 이 앱은 40분 타이머만 보여주고 강제 종료는 안 함.</div>'+
+ '<div class="row"><button class="btn pri" data-a="startMock">모의고사 시작 →</button><span class="small mute">마이크 권한을 물어보면 허용해줘. 조용한 곳 + 이어폰 추천 (스피커 소리가 인식될 수 있음)</span></div></div>';
+};
+
+function qView(){
+ const q=curQ(),c=SES.cur,tot=SES.qs.length;const showType=S.showText||SES.mode==='practice';
+ const prog=SES.mode==='mock'?'<div class="prog">'+SES.qs.map((x,i)=>'<i class="'+(i<SES.idx?'done':i===SES.idx?'cur':'')+'"></i>').join('')+'</div>':'';
+ const showQ=S.showText||c.peeked||SES.mode==='practice'&&S.showText;
+ let area='';
+ if(c.phase==='ready'||c.phase==='playing'){
+  area='<div class="row">'+(S.inputMode==='voice'?'<button class="btn red" data-a="startRec">● 바로 녹음 시작</button>':'<button class="btn" data-a="toType">답변 입력하기</button>')+'<span class="small mute">'+(c.phase==='playing'?'Eva가 질문 중...':(S.autoRecord&&S.inputMode==='voice'?'▶를 누르면 질문이 나오고, 끝나면 샐 소리와 함께 녹음이 자동 시작돼.':'▶ 질문을 듣고 답변 시작.'))+'</span></div>';
+ } else if(c.phase==='rec'||c.phase==='stopping'){
+  area='<div class="row"><span class="recdot"></span><b>녹음 중</b> <span class="timer" id="qt">0:00</span><span class="small mute">목표 '+fmt(TYPES[q.t].sec[0])+'~'+fmt(TYPES[q.t].sec[1])+'</span><span class="flex1"></span><button class="btn red" data-a="stopRec" '+(c.phase==='stopping'?'disabled':'')+'>■ 답변 끝</button></div><div class="meter" id="meter" style="margin:10px 0"><i></i></div><div class="live" id="live"><span class="int">말하면 여기에 받아쓰기가 떠. (실전처럼 보지 말고 말하는 걸 추천)</span></div><div class="small" id="srwarn" style="color:var(--warn)"></div>';
+ } else if(c.phase==='review'){
+  const url=AUDIO[SES.id+'_'+SES.idx];
+  area=(url?'<audio controls src="'+url+'" style="width:100%"></audio>':'')+'<label class="f">받아쓰기 결과 ('+fmt(c.ans.dur)+'). 인식이 틀린 부분은 고쳐도 되는데, 틀린 단어 자체가 발음 점검 포인트야.</label><textarea id="tx">'+esc(c.ans.transcript)+'</textarea>'+(c.ans.srErr?'<div class="small" style="color:var(--warn)">음성인식 상태: '+esc(c.ans.srErr)+' → 비어 있으면 직접 입력해도 돼 (녹음 들으면서).</div>':'')+'<div class="row" style="margin-top:8px"><button class="btn sm" data-a="rerec">↻ 다시 녹음</button></div>';
+ } else if(c.phase==='type'){
+  area='<label class="f">답변 입력 (말하듯이 써줘. 시간은 질문 끝난 시점부터 잼) <span class="timer" id="qt">0:00</span></label><textarea id="tx" placeholder="Well, let me think...">'+esc(c.draft||'')+'</textarea>'+(c.err?'<div class="small" style="color:var(--warn)">'+esc(c.err)+'</div>':'');
+ }
+ return '<div class="row"><h1 style="margin:0">'+(SES.mode==='mock'?'Q'+q.n+' <span class="mute" style="font-size:15px">/ '+tot+'</span>':'유형별 연습')+'</h1>'+(showType?'<span class="tag acc">'+TYPES[q.t].name+'</span><span class="tag">'+esc(q.topicName)+'</span>':'')+'<span class="flex1"></span>'+(SES.mode==='mock'?'<span class="small mute">남은 시간</span> <span class="timer" id="gt">40:00</span>':'')+'</div>'+prog+
+ '<div class="qbox"><div class="eva"><div class="ava '+(c.phase==='playing'?'talk':'')+'" id="ava">Eva</div><div class="flex1"><div class="row"><button class="btn pri" data-a="play" '+(c.phase==='rec'||c.phase==='playing'?'disabled':'')+'>▶ 질문 듣기</button><button class="btn" data-a="replay" '+(c.replayUsed||!c.played?'disabled':'')+'>↻ 다시 듣기 (1회)</button>'+(!showQ?'<button class="btn sm" data-a="peek">텍스트 보기</button>':'')+'</div><div class="qtext '+(showQ?'':'qhidden')+'">'+(showQ?esc(q.q):'(질문 텍스트 숨김: 듣고 이해하는 것도 실력)')+'</div></div></div><div class="sep"></div>'+area+'</div>'+
+ '<div class="row" style="margin-top:14px"><button class="btn pri" data-a="next" '+(c.phase==='stopping'||c.phase==='playing'?'disabled':'')+'>'+(SES.mode==='practice'?'채점하기 →':(SES.idx===tot-1?'제출하고 채점 →':'다음 문제 →'))+'</button><button class="btn" data-a="skip">건너뛰기</button><span class="flex1"></span><button class="btn sm" data-a="quit">'+(SES.mode==='mock'?'시험 종료':'나가기')+'</button></div>';
+}
+function adjustView(){return '<h1>난이도 재조정</h1><div class="card"><p>실제 시험처럼 Q7 다음에 나오는 화면이야. 나머지 문항을 어떻게 할까?</p><div class="row"><button class="btn" data-a="adjust" data-v="easy">쉽게 (Q15 → Eva에게 질문)</button><button class="btn pri" data-a="adjust" data-v="same">비슷하게</button><button class="btn" data-a="adjust" data-v="hard">어렵게</button></div><p class="small mute">재조정 선택 자체는 성적에 영향 없고, 답변 내용이 성적을 좌우한다는 게 공식 FAQ 설명 (가이드북 FAQ 5). AL 목표면 보통 "비슷하게/어렵게".</p></div>'}
+function fbView(){
+ const q=curQ();const key=SES.id+'_'+SES.idx;
+ const btns=SES.mode==='practice'?'<button class="btn pri" data-a="pracAgain">같은 문제 다시</button><button class="btn" data-a="pracNew">새 문제</button><button class="btn" data-a="copyPromptQ">AI 상세채점 프롬프트 복사</button>'+(S.apiKey?'<button class="btn" data-a="llmQ">API로 AI 채점</button>':'')+'<button class="btn sm" data-a="quit">나가기</button>':'<button class="btn pri" data-a="cont">다음 문제 →</button>';
+ return '<h1>'+(SES.mode==='mock'?'Q'+q.n+' 피드백':'채점 결과')+'</h1><div class="card">'+qDetail(q,q.res,key)+'</div><div id="llmq" class="card md" style="'+(LLMOUT[key]?'':'display:none')+'">'+(LLMOUT[key]||'')+'</div><div class="row">'+btns+'</div>';
+}
+VIEWS.practice=()=>{
+ if(SES&&SES.mode==='practice')return SES.phase==='fb'?fbView():qView();
+ const types=Object.entries(TYPES).map(([k,v])=>'<option value="'+k+'" '+(PSEL.t===k?'selected':'')+'>'+v.name+'</option>').join('');
+ const pool=practicePool(PSEL.t);const topics=[...new Set(pool.map(p=>p.topicName))];
+ const stats={};for(const p of PRAC){(stats[p.t]=stats[p.t]||[]).push(p.total)}
+ return '<h1>유형별 연습</h1><div class="card"><div class="grid g3"><div><label class="f">유형</label><select data-a="psel" data-k="t">'+types+'</select></div><div><label class="f">주제 (선택)</label><select data-a="psel" data-k="topic"><option value="">랜덤</option>'+topics.map(t=>'<option '+(PSEL.topic===t?'selected':'')+'>'+esc(t)+'</option>').join('')+'</select></div><div><label class="f">답변 방식</label><select data-a="set" data-k="inputMode"><option value="voice" '+(S.inputMode==='voice'?'selected':'')+'>말하기</option><option value="type" '+(S.inputMode==='type'?'selected':'')+'>타이핑</option></select></div></div><div class="note">'+esc(TYPES[PSEL.t].tpl)+'</div><div class="row"><button class="btn pri" data-a="pracStart">문제 뽑기 →</button><span class="small mute">'+pool.length+'문항 중 랜덤</span></div></div>'+
+ '<div class="card"><h3 style="margin-top:0">유형별 내 평균</h3><table><tr><th>유형</th><th>횟수</th><th>평균</th><th>최근</th></tr>'+Object.entries(TYPES).map(([k,v])=>{const a=stats[k]||[];return '<tr><td>'+v.name+'</td><td>'+a.length+'</td><td class="score '+sc(a.length?a.reduce((x,y)=>x+y,0)/a.length:null)+'">'+(a.length?R(a.reduce((x,y)=>x+y,0)/a.length):'-')+'</td><td>'+(a.length?R(a[0]):'-')+'</td></tr>'}).join('')+'</table></div>';
+};
+
+function reportView(rep){
+ const qs=rep.qs.map(q=>Object.assign({},q,{res:analyze(q,q.ans)}));const sum=summarize(qs);
+ const errAgg={};for(const q of qs)for(const e of q.res.errors){(errAgg[e.m]=errAgg[e.m]||{n:0,ex:[],f:e.f}).n++;if(errAgg[e.m].ex.length<3)errAgg[e.m].ex.push('Q'+q.n+': "'+e.txt+'"')}
+ const overAgg={};for(const q of qs)for(const o of q.res.over){(overAgg[o.w]=overAgg[o.w]||{n:0,alts:o.alts}).n+=o.n}
+ const weakHtml=sum.weak.map(w=>{const worst=qs.filter(q=>q.t!=='intro'&&q.res.dims[w.k]!=null).sort((a,b)=>a.res.dims[w.k]-b.res.dims[w.k]).slice(0,2);const ex=worst.map(q=>{const is=q.res.issues.find(i=>i.dim===w.k);return 'Q'+q.n+' ('+TYPES[q.t].name+', '+R(q.res.dims[w.k])+'점)'+(is?': '+is.t:'')}).join(' / ');return '<div class="issue '+(w.v<55?'bad':'')+'"><b>'+w.l+' 평균 '+R(w.v)+'</b><div class="small">'+esc(ex)+'</div><div class="small" style="margin-top:4px"><span class="tag acc">연습법</span> '+esc(STUDY[w.k])+'</div></div>'}).join('');
+ const typeRows=qs.map(q=>'<tr><td>Q'+q.n+'</td><td>'+TYPES[q.t].name+'</td><td>'+esc(q.topicName)+'</td><td>'+q.res.metrics.words+'</td><td>'+(q.ans.dur>=1?fmt(q.ans.dur):'-')+'</td><td class="score '+sc(q.res.total)+'">'+R(q.res.total)+'</td><td>'+levelOf(q.res.total)+'</td></tr>').join('');
+ return '<div class="row"><h1 style="margin:0">모의고사 리포트</h1><span class="mute small">'+new Date(rep.date).toLocaleString('ko-KR')+' · 난이도 '+rep.difficulty+(rep.elapsed?' · 소요 '+fmt(rep.elapsed):'')+'</span><span class="flex1"></span><button class="btn sm" data-a="closeRep">닫기</button></div>'+
+ '<div class="card" style="margin-top:12px"><div class="lvlbox"><div><div class="small mute">예상 등급</div><div class="lvl">'+sum.level+'</div></div><div><div class="score" style="font-size:22px">'+R(sum.overall)+'<span class="mute small"> / 100</span></div><div class="small mute">점수만 보면 '+sum.raw+(sum.raw!==sum.level?' → 상한 규칙으로 '+sum.level:'')+'</div></div><div class="flex1 small mute" style="min-width:240px">휴리스틱(규칙 기반) 추정치야. 공식 채점이 아니고, 발음·억양·의미 정확성은 제대로 못 재. 더 정확한 평가는 아래 "AI 상세 채점"으로.</div></div>'+
+ (sum.caps.length?'<div style="margin-top:10px">'+sum.caps.map(c=>'<div class="issue bad"><b>'+c.L+' 상한 요인 (이걸 안 고치면 '+c.L+' 위로 못 감)</b><div class="small">'+esc(c.why)+'</div></div>').join('')+'</div>':'')+'</div>'+
+ '<div class="grid g2"><div class="card"><h3 style="margin-top:0">항목별 평균 (Q1 제외)</h3>'+bars(sum.dimAvg)+'</div><div class="card"><h3 style="margin-top:0">가장 부족한 것 TOP 3</h3>'+weakHtml+'</div></div>'+
+ '<div class="grid g2"><div class="card"><h3 style="margin-top:0">반복된 문법 오류</h3>'+(Object.keys(errAgg).length?'<table><tr><th>유형</th><th>횟수</th><th>예시 → 고치기</th></tr>'+Object.entries(errAgg).sort((a,b)=>b[1].n-a[1].n).map(([m,v])=>'<tr><td>'+esc(m)+'</td><td>'+v.n+'</td><td>'+esc(v.ex.join(' / '))+'<br><span class="mute">→ '+esc(v.f)+'</span></td></tr>').join('')+'</table>':'<p class="mute small">규칙으로 잡힌 오류 없음 (단, 규칙이 못 잡는 오류는 있을 수 있음)</p>')+'</div>'+
+ '<div class="card"><h3 style="margin-top:0">자주 반복한 단어</h3>'+(Object.keys(overAgg).length?'<table><tr><th>단어</th><th>횟수</th><th>대체 표현</th></tr>'+Object.entries(overAgg).sort((a,b)=>b[1].n-a[1].n).map(([w,v])=>'<tr><td>'+esc(w)+'</td><td>'+v.n+'</td><td>'+esc(v.alts.join(', '))+'</td></tr>').join('')+'</table>':'<p class="mute small">눈에 띄는 반복 없음</p>')+'</div></div>'+
+ '<div class="card"><h3 style="margin-top:0">문항별 점수</h3><table><tr><th>#</th><th>유형</th><th>주제</th><th>단어</th><th>시간</th><th>점수</th><th>수준</th></tr>'+typeRows+'</table></div>'+
+ '<h2>문항별 상세 (클릭해서 펼치기)</h2>'+qs.map((q,i)=>'<details><summary><b>Q'+q.n+'</b><span class="tag acc">'+TYPES[q.t].name+'</span><span class="small mute">'+esc(q.topicName)+'</span><span class="flex1"></span><span class="score '+sc(q.res.total)+'">'+R(q.res.total)+'</span><span class="small mute">'+q.res.issues.length+'개 지적</span></summary><div class="in">'+qDetail(q,q.res,rep.id+'_'+i)+'</div></details>').join('')+
+ '<div class="card"><h3 style="margin-top:0">AI 상세 채점 (더 정확하게)</h3><p class="small mute">이 앱 채점은 규칙 기반이라 의미·자연스러움은 못 봐. 아래 버튼으로 평가기준+내 답변+자동 지표를 묶은 프롬프트를 복사해서 ChatGPT나 Claude에 붙여넣으면 상세 채점 + 문장 교정 + AL 버전 답변을 받을 수 있어. (설정에 API 키를 넣으면 여기서 바로 돌릴 수도 있음)</p><div class="row"><button class="btn pri" data-a="copyPrompt">프롬프트 복사</button>'+(S.apiKey?'<button class="btn" data-a="llmRep">API로 바로 채점</button>':'')+'<a class="btn sm" href="https://chatgpt.com/" target="_blank">ChatGPT 열기</a><a class="btn sm" href="https://claude.ai/new" target="_blank">Claude 열기</a></div><div id="llmrep" class="md" style="margin-top:12px">'+(LLMOUT[rep.id]||'')+'</div></div>';
+}
+
+VIEWS.history=()=>{
+ const pts=HIST.slice(0,20).reverse();
+ let svg='';
+ if(pts.length>=2){const W=700,H=160,P=24;const x=i=>P+i*(W-2*P)/(pts.length-1),y=v=>H-P-(v/100)*(H-2*P);
+  svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto"><g stroke="#2a313b">'+[35,45,54,62,70,80].map(v=>'<line x1="'+P+'" x2="'+(W-P)+'" y1="'+y(v)+'" y2="'+y(v)+'" />').join('')+'</g><g fill="#9aa3ad" font-size="10">'+[[35,'IL'],[45,'IM1'],[54,'IM2'],[62,'IM3'],[70,'IH'],[80,'AL']].map(([v,l])=>'<text x="2" y="'+(y(v)+3)+'">'+l+'</text>').join('')+'</g><polyline fill="none" stroke="#3ec7a6" stroke-width="2.5" points="'+pts.map((p,i)=>x(i)+','+y(p.sum.overall)).join(' ')+'"/>'+pts.map((p,i)=>'<circle cx="'+x(i)+'" cy="'+y(p.sum.overall)+'" r="4" fill="#3ec7a6"/>').join('')+'</svg>'}
+ return '<h1>기록</h1>'+(svg?'<div class="card"><h3 style="margin-top:0">모의고사 점수 추이</h3>'+svg+'</div>':'')+
+ '<div class="card"><h3 style="margin-top:0">모의고사 ('+HIST.length+')</h3>'+(HIST.length?'<table><tr><th>날짜</th><th>등급</th><th>점수</th>'+DIMS.map(([k,l])=>'<th>'+l+'</th>').join('')+'<th></th></tr>'+HIST.map((h,i)=>'<tr><td>'+new Date(h.date).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})+'</td><td><b>'+h.sum.level+'</b></td><td class="score '+sc(h.sum.overall)+'">'+R(h.sum.overall)+'</td>'+DIMS.map(([k])=>'<td class="'+sc(h.sum.dimAvg[k])+'">'+(h.sum.dimAvg[k]==null?'-':R(h.sum.dimAvg[k]))+'</td>').join('')+'<td><button class="btn sm" data-a="openRep" data-i="'+i+'">보기</button> <button class="btn sm" data-a="delRep" data-i="'+i+'">삭제</button></td></tr>').join('')+'</table>':'<p class="mute">아직 없음</p>')+'</div>'+
+ '<div class="card"><h3 style="margin-top:0">유형별 연습 기록 ('+PRAC.length+')</h3>'+(PRAC.length?'<table><tr><th>날짜</th><th>유형</th><th>주제</th><th>점수</th><th></th></tr>'+PRAC.slice(0,60).map((p,i)=>'<tr><td>'+new Date(p.date).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})+'</td><td>'+TYPES[p.t].name+'</td><td>'+esc(p.topicName)+'</td><td class="score '+sc(p.total)+'">'+R(p.total)+'</td><td><button class="btn sm" data-a="openPrac" data-i="'+i+'">보기</button></td></tr>').join('')+'</table>':'<p class="mute">아직 없음</p>')+'<div id="pracDetail"></div></div>'+
+ '<div class="card"><h3 style="margin-top:0">데이터</h3><div class="row"><button class="btn sm" data-a="export">JSON으로 내보내기</button><label class="btn sm">가져오기<input type="file" id="imp" accept=".json" style="display:none"></label><button class="btn sm" data-a="wipe">전체 삭제</button></div><p class="small mute">기록은 이 브라우저의 localStorage에만 저장돼. 녹음 파일은 현재 세션에서만 재생 가능(새로고침하면 사라짐).</p></div>';
+};
+
+VIEWS.rubric=()=>'<h1>평가기준</h1>'+
+ '<div class="card"><h3 style="margin-top:0">1. 공식 기준 (첨부 가이드북 p.13)</h3><table><tr><th>평가영역</th><th>내용</th></tr><tr><td>Global Tasks / Functions</td><td>언어로 어떤 과제들을 수행할 수 있는지</td></tr><tr><td>Context / Content</td><td>과제 수행에 쓰는 사회적 문맥과 내용의 범위</td></tr><tr><td>Accuracy / Comprehensibility</td><td>답변의 보편적 이해도와 정확성</td></tr><tr><td>Text Type</td><td>발화량과 어문 구조 (단어 → 문장 → 문단)</td></tr></table>'+
+ '<h3>등급 요약 (가이드북)</h3><table><tr><td><b>IM</b></td><td>익숙한 상황에서 문장을 나열하며 자연스럽게 말함. 다양한 문장·어휘를 실험적으로 사용. (IM은 Fluency·Delivery·Production으로 IM1~3 세분)</td></tr><tr><td><b>IH</b></td><td>익숙하지 않거나 예측 못한 복잡한 상황에서도 대부분 사건을 설명하고 문제를 해결. 발화량이 많고 어휘가 다양.</td></tr><tr><td><b>AL</b></td><td>사건 서술 시 <b>시제를 일관되게 관리</b>, 사람·사물 묘사에 <b>다양한 형용사</b>, 적절한 위치의 <b>접속사로 문장 간 결속력</b>, <b>문단 구조</b>를 능숙하게 구성. 익숙하지 않은 복잡한 상황도 설명·해결.</td></tr></table><p class="small mute">FAQ: 길기만 한 답변보다 질문에 충실하고 서론-본론-결론 구성. 문항당 짧으면 1분, 일반적으로 2분~2분 30초 권장. 발음은 이해 가능한 수준이면 큰 영향 없음. 모르는 주제도 답해야 함 (무응답 감점/UR).</p></div>'+
+ '<div class="card"><h3 style="margin-top:0">2. 2026-10-29부터: 영어 OPIc AI 자동채점</h3><ul class="small"><li>ACTFL 공인 채점자 → 자동 채점(Machine Scoring). 영어만 해당. 시험 형식·시행 방식·채점 기준은 기존과 동일, 공인 채점자가 품질검증(QA) (OPIc 공지, 한국경제).</li><li>강지완 분석: 공인 채점 약 46만 건으로 학습, 재채점은 시스템 오류 외 불가. LTI 자료에 ASR 논문 참조 → <b>발화가 텍스트로 잘 인식되는지, 주제 일치, 문법 정확성</b>이 중요할 것이라는 추정. 같은 회사의 AI 시험(SAIL)에서 암기 답변이 NH 같은 낮은 등급을 받았다는 후기도 소개.</li><li>그래서 이 앱은 주제 이탈과 인식 신뢰도를 따로 체크하고, 암기보다 구조·표현 중심으로 피드백함.</li></ul></div>'+
+ '<div class="card"><h3 style="margin-top:0">3. 세부진단서 항목 (강지완 오픽TV 설명)</h3><table><tr><th>항목</th><th>무엇을 보나</th></tr><tr><td>Verb Tenses (6항목)</td><td>시제 통제. 과거는 보통 Q4·6·7·9·10·13에서 체크. 과거시제가 약하면 IH가 상한.</td></tr><tr><td>Verb Forms / Logical Sequencing</td><td>-ing/to부정사 오류, 논리적 흐름(점프 X)</td></tr><tr><td>Scale (Text Type)</td><td>words → sentences(IM1) → strings(IM2) → connected(IM3) → skeletal paragraph(IH/AL). 주로 Q2·5·8 묘사에서 측정.</td></tr><tr><td>Breadth of Vocabulary</td><td>같은 표현 반복하면 체크되고 IH 상한. 해외파도 여기서 막힘.</td></tr><tr><td>Complication (Q12)</td><td>예기치 못한 문제 상황을 해결하나. succeeds면 IH 이상, unable이면 IM2.</td></tr><tr><td>감점 항목</td><td>Speech rate, Fluency(2~3초 멈춤), Connectors, Syntax(구문 단조), Agreement(수일치), Strategies(막혔 때 돌려말하기), Articulation(발음 p/f, r/l), Stress, Intonation</td></tr></table></div>'+
+ '<div class="card"><h3 style="margin-top:0">4. IH vs AL: 유튜브 실제 답변 비교에서 뽑은 차이</h3><ul class="small"><li><b>메인 포인트 하나, 초반에.</b> 핵심을 20초 안에, 나머지는 짧은 부연. 질문 항목을 다 답하려다 흐려지지 말 것 (오픽노잼).</li><li><b>감정을 분명하게, 단어는 다양하게.</b> I found it disappointing / it really tested my patience / which was such a relief (오즐하, 주책임).</li><li><b>회화체 연결어·필러로 즉흥처럼.</b> The thing is / Long story short / At the end of the day / Anyway (오즐하). 단, 같은 필러 반복(so, so, so)은 감점 (오픽노잼). AI 채점에서 필러 효과는 아직 불확실하니 과하게 넣지 말 것.</li><li><b>시제 정밀도.</b> 과거 대비 문장에서 We won\'t worry → We didn\'t have to worry (오픽노잼).</li><li><b>비교 질문:</b> 현재 메인 포인트(비교어 없이) → 과거 → 현재·감정 (오픽노잼).</li><li><b>길이:</b> AL은 90초 안팎이 적당, 3분 가까운 IH 답변은 너무 길었다는 사례 (오픽노잼, 주책임). 가이드북은 1분~2분30초.</li><li><b>어려운 단어가 필수는 아님.</b> 익숙한 표현을 정확하고 다양하게 (오즐하).</li></ul></div>'+
+ '<div class="card"><h3 style="margin-top:0">5. 이 앱의 채점 방식</h3><table><tr><th>항목 (가중치)</th><th>측정 방법</th><th>근거</th></tr>'+
+ [['과제 수행 (22%)','유형별 필수 요소 감지 (예: 과거경험 = 언제/사건/감정/결과, 롤플레이 = 질문 3개+, 대안 2개+). 주제어가 없으면 ×0.6','Global Tasks, Q11·Q12 진단서'],['시제 통제 (14%)','과거 유형: 과거형 비율(45%→82%), 현재 유형: 현재형 비율, 비교: 과거·현재 모두, 이슈: 시제·조동사 다양성','AL 정의, Verb Tenses'],['문단 구성 (12%)','도입/마무리 멘트, 초반 메인 포인트, 본론 전개어, 연결 밀도','Text Type, Scale'],['연결어·복문 (10%)','연결어 종류 수 + 범주(이유/대조/추가/순서/관계사/조건/예시/정리)','AL 정의, Connectors·Syntax'],['어휘 폭 (12%)','MATTR 어휘 다양도 + 반복 단어 감점 + 고급 표현 가점','Breadth of Vocabulary'],['문법 정확성 (13%)','한국인 빈출 오류 30여 개 패턴 / 100단어당','Accuracy, Agreement'],['유창성 (10%)','WPM, 2.5초+ 멈춤 빈도, 첫 마디까지 시간, 음성인식 신뢰도, 더듬기 (타이핑이면 제외)','Fluency·Speech rate, ASR'],['발화량 (7%)','유형별 목표 단어·시간 대비 (너무 길어도 감점)','Text Type, FAQ 3']].map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="mute">'+r[2]+'</td></tr>').join('')+
+ '</table><h3>등급 추정</h3><p class="small">문항 점수 가중평균 (Q1 ×0.3, Q12 ×1.3, Q14-15 ×1.4) → AL 80+ / IH 70+ / IM3 62+ / IM2 54+ / IM1 45+ / IL 35+. 상한 규칙: 과거 문항 시제 <60 → 최대 IH, Q12 과제 <60 → 최대 IM2, 어휘 <55 → 최대 IH, Q14-15 <66 → 최대 IH, 발화량 <45 → 최대 IM1.</p><div class="note">한계: 규칙 기반이라 내용의 논리·자연스러움·발음 품질은 간접적으로만 봄 (인식 신뢰도). 컷오프는 내가 정한 것이고 공식 수치가 아님. 유튜버 주장은 공식 기준이 아니라 경험칙. 아래 서로 다른 출처를 교차해서 겹치는 부분 위주로 반영함.</div></div>'+
+ '<div class="card"><h3 style="margin-top:0">출처</h3><ul class="small">'+SOURCES.map(s=>'<li>'+(s[1]?'<a href="'+s[1]+'" target="_blank">'+esc(s[0])+'</a>':esc(s[0]))+'</li>').join('')+'</ul></div>';
+
+VIEWS.bank=()=>'<h1>표현 · 모범답변</h1><div class="note">표현을 누르면 원어민 음성으로 읽어줘. 암기보다 내 이야기에 끼워 쓰는 연습용. 모범답변의 개인 정보(전공·알바 등)는 예시니까 사실에 맞게 바꿔.</div>'+
+ '<h2>유형별 구조 + AL 예시</h2>'+Object.entries(TYPES).map(([k,T])=>{const s=SAMPLES[k];return '<details><summary><b>'+T.name+'</b><span class="small mute">목표 '+fmt(T.sec[0])+'~'+fmt(T.sec[1])+' · '+T.words[0]+'~'+T.words[1]+'단어</span></summary><div class="in"><div class="note">'+esc(T.tpl)+'<br><span class="small">근거: '+esc(T.src)+'</span></div>'+(s?'<div class="small mute">Q: '+esc(s.q)+'</div><div class="sample">'+esc(s.a)+'</div><div class="row" style="margin-top:8px"><button class="btn sm" data-a="say" data-text="'+esc(s.a)+'">▶ 듣기</button><button class="btn sm" data-a="anaSample" data-k="'+k+'">이 예시를 앱으로 채점해보기</button></div><div id="sa_'+k+'"></div>':'')+'</div></details>'}).join('')+
+ '<h2>상황별 표현</h2><div class="grid g2">'+EXPR.map(([cat,items])=>'<div class="card"><h3 style="margin-top:0">'+cat+'</h3>'+items.map(([en,ko])=>'<div class="row" style="justify-content:space-between;border-bottom:1px solid var(--line);padding:5px 0"><span><a href="javascript:void(0)" data-a="say" data-text="'+esc(en.replace(/~/g,'something'))+'">'+esc(en)+'</a></span><span class="small mute">'+esc(ko)+'</span></div>').join('')+'</div>').join('')+'</div>'+
+ '<h2>한국인 빈출 오류 (앱이 자동으로 잡는 것)</h2><div class="card"><table>'+COMMON_ERRORS.map(r=>'<tr><td style="width:200px"><b>'+esc(r[0])+'</b></td><td>'+esc(r[1])+'</td></tr>').join('')+'</table></div>';
+
+VIEWS.settings=()=>{
+ const vs=VOICES.map(v=>'<option value="'+esc(v.name)+'" '+(S.voiceName===v.name?'selected':'')+'>'+esc(v.name+' ('+v.lang+')')+'</option>').join('');
+ const hasSR=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+ return '<h1>설정</h1><div class="card"><h3 style="margin-top:0">음성</h3><div class="grid g3"><div><label class="f">Eva 목소리</label><select data-a="set" data-k="voiceName"><option value="">자동 (en-US)</option>'+vs+'</select></div><div><label class="f">말 속도 ('+S.rate+')</label><input type="number" step="0.05" min="0.7" max="1.3" value="'+S.rate+'" data-a="set" data-k="rate" data-num="1"></div><div><label class="f">&nbsp;</label><button class="btn" data-a="say" data-text="Hi, I am Eva. Let\'s start the interview now. Tell me a little bit about yourself.">▶ 목소리 테스트</button></div></div>'+
+ '<div class="grid g3" style="margin-top:6px"><div><label class="f">질문 끝나면 녹음 자동 시작</label><select data-a="set" data-k="autoRecord" data-bool="1"><option value="1" '+(S.autoRecord?'selected':'')+'>켜기</option><option value="0" '+(!S.autoRecord?'selected':'')+'>끄기 (아이폰 권장)</option></select></div><div><label class="f">녹음 파일 + 멈춤 분석</label><select data-a="set" data-k="recAudio" data-bool="1"><option value="1" '+(S.recAudio!==false?'selected':'')+'>켜기</option><option value="0" '+(S.recAudio===false?'selected':'')+'>끄기 (음성인식만, 폰에서 인식이 안 될 때)</option></select></div></div>'+(IS_IOS?'<div class="note">아이폰: Safari로 열어야 음성인식이 돼 (iOS의 Chrome 등 다른 브라우저는 안 될 수 있음). 설정 → Siri 또는 일반 → 키보드 → 받아쓰기가 켜져 있어야 하고, 녹음은 버튼을 직접 눌러서 시작하는 게 안정적이야. 무음 모드면 Eva 목소리가 안 나올 수 있어.</div>':'')+
+ '<h3>마이크·음성인식 테스트</h3><p class="small mute">브라우저 음성인식: '+(hasSR?'지원됨 (Chrome 계열은 구글 서버로 인식, 인터넷 필요)':'미지원 → 녹음만 되고 텍스트는 직접 입력')+'</p><div class="row"><button class="btn" data-a="micTest">'+(MICTEST?'■ 테스트 중지':'● 6초 테스트')+'</button></div><div class="meter" id="meter" style="margin:10px 0"><i></i></div><div class="live" id="live">'+(MICTEST&&MICTEST.done?esc(MICTEST.text||'(인식된 내용 없음)')+'<div class="small mute">신뢰도 '+(MICTEST.conf?Math.round(MICTEST.conf*100)+'%':'-')+(MICTEST.err?' · 오류: '+esc(MICTEST.err):'')+'</div>':'<span class="int">"Hello Eva, this is a microphone test"라고 말해봐</span>')+'</div></div>'+
+ '<div class="card"><h3 style="margin-top:0">AI 상세 채점 API (선택)</h3><p class="small mute">없어도 됨: 리포트의 "프롬프트 복사" → ChatGPT/Claude에 붙여넣기가 기본. API 키를 넣으면 앱 안에서 바로 호출(종량제 과금). 키는 이 브라우저 localStorage에만 저장되고 제공사로만 전송돼.</p><div class="grid g3"><div><label class="f">제공사</label><select data-a="set" data-k="provider">'+[['openai','OpenAI'],['anthropic','Anthropic (Claude)'],['gemini','Google Gemini']].map(([v,l])=>'<option value="'+v+'" '+(S.provider===v?'selected':'')+'>'+l+'</option>').join('')+'</select></div><div><label class="f">모델명 (비우면 기본값)</label><input type="text" value="'+esc(S.model)+'" placeholder="'+({openai:'gpt-4.1-mini',anthropic:'claude-sonnet-4-5',gemini:'gemini-2.5-flash'}[S.provider])+'" data-a="set" data-k="model"></div><div><label class="f">API 키</label><input type="password" value="'+esc(S.apiKey)+'" placeholder="sk-..." data-a="set" data-k="apiKey"></div></div><p class="small mute">모델명은 제공사 사정으로 바뀔 수 있어. 오류 나면 최신 모델명으로 바꿔줘.</p></div>';
+};
+
+/* ---------------- LLM ---------------- */
+function buildPrompt(items){
+ let s='너는 ACTFL OPIc 영어 말하기 채점 기준을 잘 아는 엄격한 스피킹 코치야. 아래 응시자의 답변(음성인식 텍스트, 구두점은 인식기 한계로 부정확할 수 있음)을 채점해줘. 목표 등급은 AL. 아첨하지 말고 솔직하게.\n\n[평가 기준]\n- ACTFL 4영역: Global Tasks/Functions, Context/Content, Accuracy/Comprehensibility, Text Type(문장→문단)\n- IH: 익숙하지 않은 복잡한 상황에서도 대부분 사건 설명·문제 해결, 발화량 많고 어휘 다양\n- AL: 서술 시 시제를 일관되게 관리, 다양한 형용사로 묘사, 접속사로 문장 결속, 문단 구조 능숙, 익숙하지 않은 복잡한 상황도 설명·해결\n- 세부진단서 항목: 시제 통제(특히 과거 경험 문항), 동사 형태, 논리적 전개, Scale(sentence→strings→connected→skeletal paragraph), 어휘 폭(같은 표현 반복 시 IH 상한), Q12 문제 해결 성공 여부, 감점: 말속도, 2~3초 멈춤, 연결어 부족, 구문 단조, 수일치, 발음/강세/억양\n- 2026-10-29부터 영어 OPIc은 AI 자동채점(기준은 동일). 질문 의도 이탈·암기티가 나는 답변은 불리할 수 있음\n- 문항당 권장 길이 약 1분 30초~2분\n\n[답변]\n';
+ for(const q of items){const m=q.res.metrics,a=q.ans||{};s+='\nQ'+(q.n||'-')+' ['+TYPES[q.t].name+'] '+q.q+'\n답변: "'+(norm(a.transcript)||'(무응답)')+'"\n자동지표: 단어 '+m.words+(a.dur?', 시간 '+Math.round(a.dur)+'초':'')+(m.wpm?', '+Math.round(m.wpm)+'WPM':'')+(a.mode==='voice'?', 2.5초+ 멈춤 '+(a.pauses||0)+'회':'')+(a.conf?', 음성인식 신뢰도 '+Math.round(a.conf*100)+'%':'')+(m.pastRatio!=null?', 과거형 비율 '+Math.round(m.pastRatio*100)+'%':'')+(a.mode==='type'?' (타이핑 답변)':'')+'\n'}
+ s+='\n[출력 형식: 한국어로, 영어 예문은 영어로]\n1. 예상 등급(NH~AL)과 근거 3줄\n2. 기준별 점수(각 10점): 과제수행, 시제, 문단구성, 연결/복문, 어휘폭, 정확성, 유창성(지표 참고), 발화량\n3. 문항별 부족한 점 2~3개 (원문 인용 → 고친 문장)\n4. 반복되는 문법 오류 목록 (원문 → 수정, 규칙 한 줄)\n5. 반복 표현 → 대체 표현\n6. 점수가 가장 낮은 문항 '+(items.length>1?'2개':'')+'를 AL 수준으로 다시 쓴 버전 (내 내용 유지, 150~200단어, 90초 분량)\n7. 시험 전까지 우선순위 연습 3가지\n';
+ return s;
+}
+async function callLLM(prompt){
+ const k=(S.apiKey||'').trim();if(!k)throw new Error('API 키 없음');
+ if(S.provider==='openai'){const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+k},body:JSON.stringify({model:S.model||'gpt-4.1-mini',messages:[{role:'user',content:prompt}]})});const j=await r.json();if(!r.ok)throw new Error((j.error&&j.error.message)||r.status);return j.choices[0].message.content}
+ if(S.provider==='anthropic'){const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:S.model||'claude-sonnet-4-5',max_tokens:6000,messages:[{role:'user',content:prompt}]})});const j=await r.json();if(!r.ok)throw new Error((j.error&&j.error.message)||r.status);return j.content.map(c=>c.text||'').join('')}
+ const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+(S.model||'gemini-2.5-flash')+':generateContent?key='+encodeURIComponent(k),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});const j=await r.json();if(!r.ok)throw new Error((j.error&&j.error.message)||r.status);return j.candidates[0].content.parts.map(p=>p.text||'').join('');
+}
+function md(t){
+ const L=esc(t).split('\n');let out='',inL=false;
+ const inl=s=>s.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<code>$1</code>');
+ for(let l of L){if(/^\s*([-*]|\d+\.)\s+/.test(l)){if(!inL){out+='<ul>';inL=true}out+='<li>'+inl(l.replace(/^\s*([-*]|\d+\.)\s+/,''))+'</li>';continue}if(inL){out+='</ul>';inL=false}
+  if(/^#{1,4}\s/.test(l))out+='<h4>'+inl(l.replace(/^#+\s/,''))+'</h4>';else if(l.trim())out+='<p>'+inl(l)+'</p>'}
+ if(inL)out+='</ul>';return out;
+}
+async function copyText(t){try{await navigator.clipboard.writeText(t);toast('복사했어. ChatGPT/Claude에 붙여넣기!')}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('복사했어')}}
+
+/* ---------------- actions ---------------- */
+async function startRec(){
+ const c=SES.cur;
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){c.phase='type';c.err='이 브라우저에서 마이크를 못 써서 타이핑 모드로 전환했어';c.qEnd=c.qEnd||Date.now();render();return}
+ try{c.phase='rec';c.recStart=Date.now();render();const l0=$('#live');if(l0)l0.innerHTML='<span class="int">마이크 연결 중... 주소창에 권한 팝업이 떠 있으면 허용해줘.</span>';await Rec.start(onRecUpd);c.recStart=Date.now();const l1=$('#live');if(l1&&!Rec.finalText)l1.innerHTML='<span class="int">녹음 중. 말하면 여기에 받아쓰기가 떠.</span>'}
+ catch(e){c.phase='type';c.err='마이크 사용 불가 ('+e.message+') → 이 문항은 타이핑으로. 주소창의 마이크 권한을 허용해줘.';c.qEnd=c.qEnd||Date.now();render()}
+}
+function onRecUpd(){const m=$('#meter i');if(m)m.style.width=(Rec.level*100)+'%';const l=$('#live');if(l&&(Rec.finalText||Rec.interim))l.innerHTML=esc(Rec.finalText)+'<span class="int">'+esc(Rec.interim)+'</span>';const w=$('#srwarn');if(w&&Rec.srErr)w.textContent='음성인식 오류: '+Rec.srErr+' (녹음은 계속됨. 끝난 뒤 텍스트를 직접 입력/수정 가능)'}
+async function stopRec(){const c=SES.cur;if(c.phase!=='rec')return;c.phase='stopping';render();const r=await Rec.stop();c.ans=Object.assign({mode:'voice'},r);if(r.audioUrl)AUDIO[SES.id+'_'+SES.idx]=r.audioUrl;c.phase='review';render()}
+async function submit(skip){
+ const c=SES.cur,q=curQ();
+ if(c.phase==='rec'){if(skip){Rec.abort();c.phase='ready'}else await stopRec()}
+ if(skip){c.ans={mode:S.inputMode,transcript:'',dur:0}}
+ else if(c.phase==='review'){const t=$('#tx');if(t)c.ans.transcript=t.value}
+ else if(c.phase==='type'){const t=$('#tx');c.ans={mode:'type',transcript:t?t.value:'',dur:(Date.now()-(c.qEnd||c.shown))/1000}}
+ else if(!c.ans){c.ans={mode:S.inputMode,transcript:'',dur:0}}
+ speechSynthesis&&speechSynthesis.cancel();
+ q.ans=c.ans;q.res=analyze(q,q.ans);q.peeked=c.peeked;
+ if(SES.mode==='practice'){PRAC.unshift({id:uid(),date:new Date().toISOString(),t:q.t,q:q.q,topicName:q.topicName,kw:q.kw,ans:slimAns(q.ans),total:q.res.total,dims:q.res.dims});PRAC=PRAC.slice(0,300);saveP();SES.phase='fb';render();window.scrollTo(0,0);return}
+ if(S.instantFb){SES.phase='fb';render();window.scrollTo(0,0);return}
+ advance();
+}
+const slimAns=a=>({mode:a.mode,transcript:a.transcript,dur:a.dur,speechDur:a.speechDur,latency:a.latency,pauses:a.pauses,conf:a.conf,audioAnalysis:a.audioAnalysis});
+function advance(){
+ SES.phase='q';
+ if(SES.idx===6&&!SES.adjusted&&SES.qs.length>7){SES.phase='adjust';render();return}
+ if(SES.idx>=SES.qs.length-1){finishTest();return}
+ SES.idx++;SES.cur=newCur();render();window.scrollTo(0,0);
+}
+function finishTest(){
+ const qs=SES.qs;const sum=summarize(qs);
+ const rep={id:SES.id,date:SES.date,difficulty:SES.difficulty,elapsed:(Date.now()-SES.start)/1000,qs:qs.map(q=>({n:q.n,t:q.t,q:q.q,topicName:q.topicName,kw:q.kw,ans:slimAns(q.ans||{mode:'type',transcript:'',dur:0}),peeked:q.peeked})),sum:{overall:sum.overall,level:sum.level,dimAvg:sum.dimAvg}};
+ HIST.unshift(rep);HIST=HIST.slice(0,60);saveH();REP=rep;SES=null;VIEW='mock';render();window.scrollTo(0,0);
+}
+const ACT={
+ nav:b=>go(b.dataset.v),
+ topic:b=>{const id=b.dataset.id;S.topics=S.topics.includes(id)?S.topics.filter(x=>x!==id):[...S.topics,id];saveS();render()},
+ startMock:()=>{if(!S.topics.length){toast('주제를 1개 이상 골라줘');return}REP=null;SES={mode:'mock',id:uid(),date:new Date().toISOString(),difficulty:S.difficulty,qs:buildTest(),idx:0,start:Date.now(),phase:'q',cur:newCur()};render();window.scrollTo(0,0)},
+ play:async()=>{getAC();const c=SES.cur;if(c.phase==='rec')return;c.phase='playing';render();await speak(curQ().q);if(!SES||SES.cur!==c||c.phase!=='playing')return;c.played=true;c.qEnd=Date.now();
+  if(S.inputMode==='type'){c.phase='type';render();return}
+  if(S.autoRecord){beep();await startRec()}else{c.phase='ready';render()}},
+ replay:async()=>{const c=SES.cur;if(c.replayUsed)return;c.replayUsed=true;if(c.phase==='rec'){Rec.abort()}if(c.phase==='type'){const t=$('#tx');c.draft=t?t.value:''}c.phase='ready';await ACT.play()},
+ peek:()=>{SES.cur.peeked=true;const c=SES.cur;if(c.phase==='type'){const t=$('#tx');c.draft=t?t.value:''}if(c.phase==='rec'){const el=document.querySelector('.qtext');if(el){el.classList.remove('qhidden');el.textContent=curQ().q}return}render()},
+ startRec:()=>{getAC();speechSynthesis.cancel();SES.cur.qEnd=SES.cur.qEnd||Date.now();SES.cur.played=true;startRec()},
+ toType:()=>{const c=SES.cur;c.phase='type';c.qEnd=c.qEnd||Date.now();render()},
+ stopRec:()=>stopRec(),
+ rerec:()=>{SES.cur.ans=null;startRec()},
+ next:()=>submit(false),
+ skip:()=>submit(true),
+ cont:()=>advance(),
+ quit:()=>{if(SES.mode==='mock'){if(!confirm('시험을 종료할까? 지금까지 답한 문항만 채점해서 저장할게.'))return;if(SES.cur.phase==='rec')Rec.abort();SES.qs=SES.qs.slice(0,SES.idx+(SES.qs[SES.idx].res?1:0));if(!SES.qs.length){SES=null;render();return}finishTest()}else{if(SES.cur.phase==='rec')Rec.abort();SES=null;render()}},
+ adjust:b=>{SES.adjusted=true;if(b.dataset.v==='easy'){const e=rnd(EVA_QS);SES.qs[14]=Object.assign({t:'rp_eva',q:e.q,topicName:'Eva에게 질문',kw:e.kw},{n:15})}SES.phase='q';SES.idx++;SES.cur=newCur();render()},
+ closeRep:()=>{REP=null;render()},
+ openRep:b=>{REP=HIST[+b.dataset.i];VIEW='mock';render();window.scrollTo(0,0)},
+ delRep:b=>{if(!confirm('삭제할까?'))return;HIST.splice(+b.dataset.i,1);saveH();render()},
+ openPrac:b=>{const p=PRAC[+b.dataset.i];const q={t:p.t,q:p.q,topicName:p.topicName,kw:p.kw,ans:p.ans};$('#pracDetail').innerHTML='<div class="sep"></div>'+qDetail(q,analyze(q,p.ans),null)},
+ psel:b=>{PSEL[b.dataset.k]=b.value;if(b.dataset.k==='t')PSEL.topic='';render()},
+ pracStart:()=>{let pool=practicePool(PSEL.t);if(PSEL.topic)pool=pool.filter(p=>p.topicName===PSEL.topic);const q=Object.assign({},rnd(pool),{n:null});SES={mode:'practice',id:uid(),qs:[q],idx:0,phase:'q',cur:newCur()};render()},
+ pracAgain:()=>{const q=Object.assign({},SES.qs[0]);delete q.ans;delete q.res;SES={mode:'practice',id:uid(),qs:[q],idx:0,phase:'q',cur:newCur()};render()},
+ pracNew:()=>ACT.pracStart(),
+ say:b=>{speak(b.dataset.text)},
+ anaSample:b=>{const k=b.dataset.k,s=SAMPLES[k];const q={t:k,q:s.q,topicName:'예시',kw:(s.q.toLowerCase().match(/[a-z]{4,}/g)||[])};const ans={mode:'type',transcript:s.a};const r=analyze(q,ans);$('#sa_'+k).innerHTML='<div class="sep"></div><div class="tx">'+highlight(s.a,r)+'</div><div style="margin-top:8px">'+bars(r.dims)+'</div><div class="small mute">타이핑 취급이라 유창성은 제외. 총점 '+R(r.total)+' ('+levelOf(r.total)+')</div>'},
+ copyPrompt:()=>{const qs=REP.qs.map(q=>Object.assign({},q,{res:analyze(q,q.ans)}));copyText(buildPrompt(qs))},
+ copyPromptQ:()=>{const q=curQ();copyText(buildPrompt([q]))},
+ llmRep:async b=>{const qs=REP.qs.map(q=>Object.assign({},q,{res:analyze(q,q.ans)}));const el=$('#llmrep');el.innerHTML='<p class="mute">AI 채점 중... (30초~1분)</p>';b.disabled=true;try{const t=await callLLM(buildPrompt(qs));LLMOUT[REP.id]=md(t);el.innerHTML=LLMOUT[REP.id]}catch(e){el.innerHTML='<p style="color:var(--bad)">오류: '+esc(e.message)+'</p>'}b.disabled=false},
+ llmQ:async b=>{const q=curQ();const key=SES.id+'_'+SES.idx;const el=$('#llmq');el.style.display='';el.innerHTML='<p class="mute">AI 채점 중...</p>';b.disabled=true;try{const t=await callLLM(buildPrompt([q]));LLMOUT[key]=md(t);el.innerHTML=LLMOUT[key]}catch(e){el.innerHTML='<p style="color:var(--bad)">오류: '+esc(e.message)+'</p>'}b.disabled=false},
+ export:()=>{const blob=new Blob([JSON.stringify({history:HIST,practice:PRAC},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='opic-al-trainer-'+new Date().toISOString().slice(0,10)+'.json';a.click()},
+ wipe:()=>{if(!confirm('모든 기록을 지울까?'))return;HIST=[];PRAC=[];saveH();saveP();render()},
+ micTest:async()=>{if(MICTEST&&!MICTEST.done){clearTimeout(MICTEST.to);const r=await Rec.stop();MICTEST={done:true,text:r.transcript,conf:r.conf,err:r.srErr};render();return}
+  MICTEST={done:false};render();try{await Rec.start(()=>{const m=$('#meter i');if(m)m.style.width=(Rec.level*100)+'%';const l=$('#live');if(l)l.innerHTML=esc(Rec.finalText)+'<span class="int">'+esc(Rec.interim)+'</span>'});MICTEST.to=setTimeout(()=>ACT.micTest(),6000)}catch(e){MICTEST={done:true,text:'',err:e.message};render()}}
+};
+document.addEventListener('click',e=>{const hl=e.target.closest('.tx span[title]');if(hl){toast(hl.title,3200);return}const b=e.target.closest('[data-a]');if(!b||b.tagName==='SELECT'||b.tagName==='INPUT')return;const f=ACT[b.dataset.a];if(f){e.preventDefault();f(b,e)}});
+document.addEventListener('change',e=>{const b=e.target;if(b.id==='imp'){const f=b.files[0];if(!f)return;f.text().then(t=>{try{const j=JSON.parse(t);if(j.history)HIST=j.history;if(j.practice)PRAC=j.practice;saveH();saveP();toast('가져왔어');render()}catch(err){toast('JSON 파일이 아니야')}});return}
+ if(b.dataset&&b.dataset.a==='set'){let v=b.value;if(b.dataset.num)v=parseFloat(v);if(b.dataset.bool)v=v==='1';S[b.dataset.k]=v;saveS();if(['provider','rate'].includes(b.dataset.k))render();return}
+ if(b.dataset&&b.dataset.a==='psel'){ACT.psel(b)}});
+setInterval(()=>{dday();if(!SES||!SES.cur)return;const gt=$('#gt');if(gt&&SES.mode==='mock'){const rem=40*60-(Date.now()-SES.start)/1000;gt.textContent=(rem<0?'-':'')+fmt(Math.abs(rem));gt.style.color=rem<300?'var(--bad)':''}
+ const qt=$('#qt');if(qt){const c=SES.cur;const base=c.phase==='rec'||c.phase==='stopping'?c.recStart:(c.qEnd||c.shown);qt.textContent=fmt((Date.now()-base)/1000);const T=TYPES[curQ().t];const el=(Date.now()-base)/1000;qt.style.color=el>T.sec[1]+30?'var(--bad)':el>=T.sec[0]?'var(--good)':''}},500);
+window.addEventListener('beforeunload',e=>{if(SES&&SES.mode==='mock'){e.preventDefault();e.returnValue=''}});
+dday();render();
+</script>
+</body>
+</html>
